@@ -1,0 +1,103 @@
+.auth-layout form {
+   padding-inline: 4em;
+   max-width: 55ch;
+}
+
+.form-field {
+   display: flex;
+   flex-direction: column;
+   gap: 0.25em;
+   width: 100%;
+
+   :is(&, .form-field-group) + :is(&, button) {
+      margin-top: 1em;
+   }
+
+   label {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
+      transition: color var(--transition-duration-short) ease;
+   }
+
+   &:focus-within label {
+      color: var(--text-color-body);
+   }
+
+   .field-error {
+      color: var(--red-100);
+      font-size: 0.875rem;
+      margin: 0;
+   }
+}
+
+.form-field-group {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   align-items: center;
+   gap: 1em;
+
+   .form-field {
+      margin: 0;
+   }
+}
+
+input,
+textarea {
+   outline: none;
+   background-color: var(--surface-100);
+   border: 1px solid var(--surface-300);
+   padding: var(--padding-md);
+   border-radius: var(--border-radius-sm);
+   font-size: 0.9rem;
+   color: var(--text-color-body);
+   width: 100%;
+   transition: border var(--transition-duration-short) ease, outline var(--transition-duration-short) ease;
+   outline: 3px solid transparent;
+
+   &:focus-visible {
+      border-color: var(--primary-500);
+      outline-color: hsl(var(--hsl-primary-500) / 0.15);
+
+      @media (prefers-color-scheme: dark) {
+         outline-color: hsl(var(--hsl-primary-500) / 0.3);
+      }
+   }
+
+   &:-webkit-autofill,
+   &:-webkit-autofill:focus,
+   &:-webkit-autofill:hover,
+   &:-webkit-autofill:active {
+      transition: background-color 0ms 600000s, color 0s 600000s !important;
+   }
+}
+
+button {
+   border: 1px solid var(--surface-200);
+   background-color: transparent;
+   color: var(--text-color-heading);
+   padding: var(--padding-md);
+   font-size: 1rem;
+   cursor: pointer;
+   border-radius: var(--border-radius-md);
+   transition: background-color var(--transition-duration-short) ease, box-shadow var(--transition-duration-short) ease;
+   font-weight: 500;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 0.5em;
+
+   &.w-full {
+      width: 100%;
+   }
+
+   &.primary {
+      background-color: var(--primary-500);
+      box-shadow: 0px 2px 5px 0px var(--primary-300) inset;
+      color: var(--text-color-on-primary);
+
+      &:hover {
+         background-color: var(--primary-400);
+         box-shadow: 0px 2px 5px 0px var(--primary-200) inset, 0px 0px 15px 0px hsl(var(--hsl-primary-200) / 0.2);
+      }
+   }
+}
