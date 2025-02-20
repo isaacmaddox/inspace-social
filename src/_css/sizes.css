@@ -7,7 +7,7 @@
 
    /* Padding */
    --padding-sm: 0.375em 0.875em;
-   --padding-md: 0.75em 1.125em;
+   --padding-md: 0.625em 0.9em;
    --padding-lg: 0.875em 1.25em;
 
    /* Border radius */
@@ -28,14 +28,21 @@
    --ls-h2: -0.02em;
 
    --fs-lg: 1.5rem;
-   --fw-lg: 500;
+   --fw-lg: 400;
    --lh-lg: 1.375;
 
    --fs-p: 1.125rem;
    --fw-p: 400;
    --lh-p: 1.375;
 
+   --fs-sm: 0.875rem;
+   --fw-sm: 400;
+   --lh-sm: 1.375;
+
+   --fw-bold: 600;
+
    --heading-heading-space: 1em;
    --heading-paragraph-space: 0.2em;
    --paragraph-paragraph-space: 1em;
+   --paragraph-small-space: 0.5em;
 }

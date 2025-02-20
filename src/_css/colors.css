@@ -7,6 +7,9 @@
    --text-color-inverted: hsla(220 14% 96% / 1);
    --text-color-on-primary: hsla(220 14% 95% / 1);
 
+   --poly-background-light: hsl(221, 22%, 65%);
+   --poly-background-dark: hsl(220, 26%, 85%);
+
    --surface-50: hsla(220 25% 97% / 1);
    --surface-100: hsla(220 25% 93% / 1);
    --surface-200: hsla(220 23% 89% / 1);
@@ -30,6 +33,17 @@
    --primary-800: hsla(220 80% 30% / 1);
    --primary-900: hsla(220 80% 25% / 1);
    --primary-950: hsla(220 80% 20% / 1);
+
+   --text-primary-100: var(--primary-900);
+   --text-primary-200: var(--primary-800);
+   --text-primary-300: var(--primary-700);
+   --text-primary-400: var(--primary-600);
+   --text-primary-500: var(--primary-500);
+   --text-primary-600: var(--primary-400);
+   --text-primary-700: var(--primary-300);
+   --text-primary-800: var(--primary-200);
+   --text-primary-900: var(--primary-100);
+   --text-primary-950: var(--primary-50);
 
    --red-50: hsla(0 80% 70% / 1);
    --red-100: hsla(0 80% 65% / 1);
@@ -97,6 +111,9 @@
       --text-color-tooltip: hsla(215 9% 50% / 1);
       --text-color-inverted: hsla(222 47% 11% / 1);
 
+      --poly-background-light: hsl(221, 22%, 45%);
+      --poly-background-dark: hsl(220, 26%, 15%);
+
       --surface-50: hsla(220 25% 3% / 1);
       --surface-100: hsla(220 25% 7% / 1);
       --surface-200: hsla(220 23% 11% / 1);
@@ -108,6 +125,19 @@
       --surface-800: hsla(220 17% 52% / 1);
       --surface-900: hsla(220 17% 80% / 1);
       --surface-950: hsla(220 15% 87% / 1);
+
+      --text-primary-50: var(--primary-50);
+      --text-primary-100: var(--primary-100);
+      --text-primary-200: var(--primary-200);
+      --text-primary-300: var(--primary-300);
+      --text-primary-400: var(--primary-400);
+      --text-primary-500: var(--primary-500);
+      --text-primary-600: var(--primary-600);
+      --text-primary-700: var(--primary-700);
+      --text-primary-800: var(--primary-800);
+      --text-primary-900: var(--primary-900);
+      --text-primary-950: var(--primary-950);
+      --text-primary-50: var(--primary-950);
 
       --hsl-text-color-heading: 224 25% 95%;
       --hsl-text-color-heading-dim: 224 25% 87.5%;

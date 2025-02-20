@@ -1,9 +1,10 @@
 "use client";
 
-import { createUser } from "@/_actions/user/create";
+import { createUser } from "@/_actions/auth/create";
 import FormField from "@/app/components/FormField";
 import { useActionState, useState } from "react";
 import "@/_css/forms.css";
+import Link from "next/link";
 
 export default function RegisterForm() {
    const [email, setEmail] = useState("");
@@ -13,7 +14,11 @@ export default function RegisterForm() {
    });
 
    return (
-      <form action={formAction}>
+      <form action={formAction} data-testid="register-form">
+         <header>
+            <h1 className="text-lg text-bold">Register</h1>
+            <p className="text-sm text-muted">Sign up now to get started on InSpace!</p>
+         </header>
          <FormField
             label="Email"
             name="email"
@@ -21,6 +26,7 @@ export default function RegisterForm() {
             defaultValue={formState.fieldValues.email}
             error={formState.error.email}
             onChange={(e) => setEmail(e.target.value)}
+            autoFocus
          />
          <FormField
             label="Handle"
@@ -41,6 +47,11 @@ export default function RegisterForm() {
             {isPending ? "Registering..." : "Register"}
          </button>
          {formState.error.root && <p className="field-error">{formState.error.root}</p>}
+         <footer>
+            <p className="text-sm text-muted">
+               Already have an account? <Link href="/login">Login</Link>
+            </p>
+         </footer>
       </form>
    );
 }

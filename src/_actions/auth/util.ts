@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 export function hashPassword(password: string, existingSalt?: string) {
-   const salt = existingSalt ?? crypto.randomBytes(16);
+   const salt = existingSalt ? Buffer.from(existingSalt, "hex") : crypto.randomBytes(16);
 
    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512");
 

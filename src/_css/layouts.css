@@ -1,7 +1,108 @@
 .auth-layout {
-   display: grid;
-   grid-template-columns: 1fr 1fr;
+   display: flex;
    align-items: center;
    justify-content: center;
    height: 100%;
+   isolation: isolate;
+   gap: 4rem;
+   flex-wrap: wrap;
+   padding: 2rem 1rem;
+
+   @media (width < 1024px) {
+      flex-direction: column;
+      align-items: start;
+      align-content: center;
+      gap: 2rem;
+   }
+
+   .auth-background {
+      position: fixed;
+      z-index: -2;
+      inset: 0;
+      opacity: 0.375;
+      transition: opacity 1s ease, filter 500ms ease;
+
+      @starting-style {
+         opacity: 0;
+         filter: blur(10px);
+      }
+   }
+
+   &::before {
+      content: "";
+      z-index: -1;
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(to right, hsl(var(--hsl-surface-100) / 1) 20%, hsl(var(--hsl-surface-100) / 0));
+
+      @media (width < 1024px) {
+         background-image: linear-gradient(to bottom, hsl(var(--hsl-surface-100) / 1) 20%, hsl(var(--hsl-surface-100) / 0));
+      }
+   }
+
+   .feature-list-container {
+      svg {
+         color: var(--text-color-heading);
+      }
+   }
+
+   .feature-list {
+      margin-block: 3em;
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+      max-width: 40ch;
+
+      @media (width < 1024px) {
+         display: none;
+      }
+
+      li p.text-bold {
+         display: flex;
+         align-items: center;
+         gap: 0.5em;
+         line-height: 1;
+      }
+   }
+
+   .auth-form-container {
+      width: min(40ch, 100%);
+
+      form {
+         width: 100%;
+         background-color: hsla(var(--hsl-surface-100) / 0.25);
+         backdrop-filter: blur(3px);
+         border: 1px solid var(--surface-300);
+         padding: 2em 1.5em;
+         border-radius: var(--border-radius-lg);
+         box-shadow: 0 10px 35px 0 hsla(var(--hsl-surface-900) / 0.15);
+         overflow: hidden;
+         transition: border-color var(--transition-duration-short) ease;
+
+         &:hover,
+         &:focus-within {
+            border-color: var(--surface-400);
+         }
+
+         @media (prefers-color-scheme: dark) {
+            box-shadow: 0 10px 35px 0 hsla(var(--hsl-surface-200) / 0.3);
+         }
+
+         hr {
+            border: none;
+            border-top: 1px solid var(--surface-300);
+            margin-block: 1em;
+         }
+
+         footer {
+            background: var(--surface-200);
+            margin-inline: -1.5em;
+            margin-block-end: -2em;
+            margin-block-start: 1em;
+            border-top: 1px solid var(--surface-400);
+            padding: var(--padding-lg);
+            text-align: center;
+         }
+      }
+   }
 }

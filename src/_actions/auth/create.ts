@@ -12,7 +12,6 @@ export async function createUser(_: unknown, userData: FormData) {
    const validatedFields = signupSchema.safeParse(data);
 
    if (!validatedFields.success) {
-      console.log(validatedFields.error.flatten().fieldErrors);
       return { error: validatedFields.error.flatten().fieldErrors, fieldValues: data };
    }
 
@@ -23,7 +22,6 @@ export async function createUser(_: unknown, userData: FormData) {
    const { handle, email, password } = validatedFields.data;
 
    const { salt, hash } = hashPassword(password);
-
 
    try {
       await prisma.user.create({

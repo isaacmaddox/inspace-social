@@ -10,7 +10,8 @@
    initial-value: white;
 }
 
-button {
+button,
+.btn {
    border: 1px solid var(--surface-200);
    background-color: transparent;
    color: var(--text-color-heading);
@@ -24,6 +25,7 @@ button {
    align-items: center;
    justify-content: center;
    gap: 0.5em;
+   text-decoration: none;
 
    &.w-full {
       width: 100%;
@@ -35,12 +37,18 @@ button {
 
       background-image: linear-gradient(to bottom, var(--button-bg-gradient-start), var(--button-bg-gradient-end));
       color: var(--text-color-on-primary);
-      transition: --button-bg-gradient-start var(--transition-duration-short) ease, --button-bg-gradient-end var(--transition-duration-short) ease;
+      transition-property: --button-bg-gradient-start, --button-bg-gradient-end, box-shadow;
+      transition-timing-function: ease;
+      transition-duration: var(--transition-duration-short);
       border: 1px solid var(--primary-600);
 
       &:hover {
          --button-bg-gradient-start: var(--primary-300);
          --button-bg-gradient-end: var(--primary-500);
+      }
+
+      &:active {
+         box-shadow: 0px 0px 20px 0px hsla(var(--hsl-primary-400) / 0.2);
       }
    }
 

@@ -34,6 +34,34 @@ p,
 
    & + & {
       margin-block-start: var(--paragraph-paragraph-space);
+
+      &:is(.text-sm) {
+         margin-block-start: var(--paragraph-small-space);
+      }
+   }
+}
+
+.text-sm {
+   font-size: var(--fs-sm);
+   font-weight: var(--fw-sm);
+   line-height: var(--lh-sm);
+   letter-spacing: var(--ls-sm);
+}
+
+.text-muted {
+   color: var(--text-color-muted);
+}
+
+.text-bold {
+   font-weight: var(--fw-bold);
+}
+
+a {
+   font: inherit;
+   color: var(--text-primary-300);
+
+   &:hover {
+      color: var(--text-primary-100);
    }
 }
 
@@ -45,6 +73,7 @@ h3,
 .text-h3,
 h4,
 .text-h4 {
+   margin-block-start: 0;
    &:has(+ &) {
       margin-block-end: var(--heading-heading-space);
    }
