@@ -12,6 +12,7 @@
 
 button,
 .btn {
+   display: inline-flex;
    border: 1px solid var(--surface-200);
    background-color: transparent;
    color: var(--text-color-heading);
@@ -19,32 +20,74 @@ button,
    font-size: 1rem;
    cursor: pointer;
    border-radius: var(--border-radius-md);
-   transition: background-color var(--transition-duration-short) ease, box-shadow var(--transition-duration-short) ease;
    font-weight: 500;
-   display: flex;
    align-items: center;
    justify-content: center;
    gap: 0.5em;
    text-decoration: none;
+   width: fit-content;
+   transition: background-color var(--transition-duration-short) ease, box-shadow var(--transition-duration-short) ease,
+      border-color var(--transition-duration-short) ease, outline-color var(--transition-duration-short) ease;
+   outline: 2px solid transparent;
+   outline-offset: 2px;
+
+   &:hover {
+      color: var(--text-color-heading);
+      border-color: var(--surface-400);
+   }
+
+   &:active {
+      border-color: var(--surface-500);
+      outline-color: hsl(var(--hsl-surface-400) / 0.5);
+   }
 
    &.w-full {
       width: 100%;
    }
 
-   &.primary {
+   &.btn-sm {
+      padding: var(--padding-sm);
+      font-size: var(--fs-sm);
+      border-radius: var(--border-radius-sm);
+   }
+
+   &.btn-primary {
       --button-bg-gradient-start: var(--primary-400);
       --button-bg-gradient-end: var(--primary-600);
 
       background-image: linear-gradient(to bottom, var(--button-bg-gradient-start), var(--button-bg-gradient-end));
       color: var(--text-color-on-primary);
-      transition-property: --button-bg-gradient-start, --button-bg-gradient-end, box-shadow;
+      transition-property: --button-bg-gradient-start, --button-bg-gradient-end, box-shadow, outline-color;
       transition-timing-function: ease;
       transition-duration: var(--transition-duration-short);
       border: 1px solid var(--primary-600);
+      outline: 2px solid transparent;
+      outline-offset: 2px;
 
       &:hover {
          --button-bg-gradient-start: var(--primary-300);
          --button-bg-gradient-end: var(--primary-500);
+      }
+
+      &:active {
+         outline-color: hsla(var(--hsl-primary-400) / 0.5);
+      }
+   }
+
+   &.btn-secondary {
+      --button-bg-gradient-start: var(--surface-inverse-200);
+      --button-bg-gradient-end: var(--surface-inverse-100);
+
+      background-image: linear-gradient(to bottom, var(--button-bg-gradient-start), var(--button-bg-gradient-end));
+      color: var(--text-color-inverted);
+      transition-property: --button-bg-gradient-start, --button-bg-gradient-end, box-shadow;
+      transition-timing-function: ease;
+      transition-duration: var(--transition-duration-short);
+      border: 1px solid var(--surface-inverse-200);
+
+      &:hover {
+         --button-bg-gradient-start: var(--surface-inverse-300);
+         --button-bg-gradient-end: var(--surface-inverse-200);
       }
 
       &:active {

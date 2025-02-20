@@ -31,7 +31,7 @@ export default function LoginForm() {
             error={formState.error.email}
          />
          <FormField label="Password" name="password" type="password" defaultValue={formState.fieldValues.password} error={formState.error.password} />
-         <button type="submit" className="primary w-full" disabled={isPending}>
+         <button type="submit" className="btn-primary w-full" disabled={isPending}>
             {isPending ? "Logging in..." : "Login"}
          </button>
          <footer>

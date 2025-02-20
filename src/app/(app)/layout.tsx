@@ -1,12 +1,14 @@
-import Link from "next/link";
+import AppNav from "../components/AppNav";
+import "@/_css/layouts.css";
+import SessionProvider from "../SessionProvider";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
    return (
-      <main>
-         <nav>
-            <Link href="/">For You</Link>
-         </nav>
-         {children}
-      </main>
+      <div className="app-layout">
+         <SessionProvider>
+            <AppNav />
+            <main>{children}</main>
+         </SessionProvider>
+      </div>
    );
 }

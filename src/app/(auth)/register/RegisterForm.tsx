@@ -43,7 +43,7 @@ export default function RegisterForm() {
             defaultValue={formState.fieldValues.confirmPassword}
             error={formState.error.confirmPassword}
          />
-         <button className="primary w-full" type="submit" disabled={isPending}>
+         <button className="btn-primary w-full" type="submit" disabled={isPending}>
             {isPending ? "Registering..." : "Register"}
          </button>
          {formState.error.root && <p className="field-error">{formState.error.root}</p>}

@@ -5,7 +5,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
    const session = await getSession();
 
    if (!session) {
-      redirect("/login");
+      redirect("/trending");
    }
 
    return children;

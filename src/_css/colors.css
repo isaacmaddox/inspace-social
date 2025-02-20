@@ -22,6 +22,18 @@
    --surface-900: hsla(220 17% 35% / 1);
    --surface-950: hsla(220 15% 20% / 1);
 
+   --surface-inverse-50: hsla(220 25% 3% / 1);
+   --surface-inverse-100: hsla(220 25% 7% / 1);
+   --surface-inverse-200: hsla(220 23% 11% / 1);
+   --surface-inverse-300: hsla(220 23% 15% / 1);
+   --surface-inverse-400: hsla(220 21% 20% / 1);
+   --surface-inverse-500: hsla(220 21% 28% / 1);
+   --surface-inverse-600: hsla(220 19% 37% / 1);
+   --surface-inverse-700: hsla(220 19% 45% / 1);
+   --surface-inverse-800: hsla(220 17% 52% / 1);
+   --surface-inverse-900: hsla(220 17% 80% / 1);
+   --surface-inverse-950: hsla(220 15% 87% / 1);
+
    --primary-50: hsla(220 80% 70% / 1);
    --primary-100: hsla(220 80% 65% / 1);
    --primary-200: hsla(220 80% 60% / 1);
@@ -125,6 +137,18 @@
       --surface-800: hsla(220 17% 52% / 1);
       --surface-900: hsla(220 17% 80% / 1);
       --surface-950: hsla(220 15% 87% / 1);
+
+      --surface-inverse-50: hsla(220 25% 97% / 1);
+      --surface-inverse-100: hsla(220 25% 93% / 1);
+      --surface-inverse-200: hsla(220 23% 89% / 1);
+      --surface-inverse-300: hsla(220 23% 80% / 1);
+      --surface-inverse-400: hsla(220 21% 75% / 1);
+      --surface-inverse-500: hsla(220 21% 69% / 1);
+      --surface-inverse-600: hsla(220 19% 63% / 1);
+      --surface-inverse-700: hsla(220 19% 63% / 1);
+      --surface-inverse-800: hsla(220 17% 63% / 1);
+      --surface-inverse-900: hsla(220 17% 35% / 1);
+      --surface-inverse-950: hsla(220 15% 20% / 1);
 
       --text-primary-50: var(--primary-50);
       --text-primary-100: var(--primary-100);
