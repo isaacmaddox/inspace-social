@@ -1,5 +1,7 @@
 @import "./colors.css";
 @import "./sizes.css";
+@import "./typography.css";
+@import "./_components/button.css";
 
 :root {
    --transition-duration-short: 100ms;

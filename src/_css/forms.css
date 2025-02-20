@@ -27,6 +27,15 @@
       color: var(--red-100);
       font-size: 0.875rem;
       margin: 0;
+      overflow: hidden;
+      transition: height 500ms cubic-bezier(0.19, 1, 0.22, 1);
+      opacity: 1;
+      height: calc-size(auto, size);
+
+      @starting-style {
+         height: 0px;
+         overflow: hidden;
+      }
    }
 }
 
@@ -68,36 +77,5 @@ textarea {
    &:-webkit-autofill:hover,
    &:-webkit-autofill:active {
       transition: background-color 0ms 600000s, color 0s 600000s !important;
-   }
-}
-
-button {
-   border: 1px solid var(--surface-200);
-   background-color: transparent;
-   color: var(--text-color-heading);
-   padding: var(--padding-md);
-   font-size: 1rem;
-   cursor: pointer;
-   border-radius: var(--border-radius-md);
-   transition: background-color var(--transition-duration-short) ease, box-shadow var(--transition-duration-short) ease;
-   font-weight: 500;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 0.5em;
-
-   &.w-full {
-      width: 100%;
-   }
-
-   &.primary {
-      background-color: var(--primary-500);
-      box-shadow: 0px 2px 5px 0px var(--primary-300) inset;
-      color: var(--text-color-on-primary);
-
-      &:hover {
-         background-color: var(--primary-400);
-         box-shadow: 0px 2px 5px 0px var(--primary-200) inset, 0px 0px 15px 0px hsl(var(--hsl-primary-200) / 0.2);
-      }
    }
 }

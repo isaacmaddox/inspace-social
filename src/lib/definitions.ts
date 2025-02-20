@@ -1,12 +1,8 @@
 import { z } from "zod";
 
 export const signupSchema = z.object({
-   firstName: z.string().trim().min(1, "First name is required"),
-   lastName: z.string().trim().min(1, "Last name is required"),
-   displayName: z.string().trim(),
-   handle: z.string().trim().min(3, "Handle must be at least 3 characters long"),
+   handle: z.string().trim().min(3, "Handle must be at least 3 characters long").regex(/^[a-zA-Z0-9_\-]+$/, "Handle cannot contain special characters or spaces"),
    email: z.string().trim().email("Invalid email address"),
-   bio: z.string().trim(),
    password: z.string().trim().min(1, "Password is required"),
    confirmPassword: z.string().trim().min(1, "Confirm password is required"),
 });

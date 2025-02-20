@@ -1,0 +1,55 @@
+h1,
+.text-h1 {
+   font-size: var(--fs-h1);
+   font-weight: var(--fw-h1);
+   color: var(--text-color-heading);
+   line-height: var(--lh-h1);
+   letter-spacing: var(--ls-h1);
+}
+
+h2,
+.text-h2 {
+   font-size: var(--fs-h2);
+   font-weight: var(--fw-h2);
+   color: var(--text-color-heading);
+   line-height: var(--lh-h2);
+   letter-spacing: var(--ls-h2);
+}
+
+.text-lg {
+   font-size: var(--fs-lg);
+   font-weight: var(--fw-lg);
+   line-height: var(--lh-lg);
+   letter-spacing: var(--ls-lg);
+}
+
+p,
+.text-base {
+   font-size: var(--fs-p);
+   font-weight: var(--fw-p);
+   color: var(--text-color-body);
+   line-height: var(--lh-p);
+   letter-spacing: var(--ls-p);
+   margin: 0;
+
+   & + & {
+      margin-block-start: var(--paragraph-paragraph-space);
+   }
+}
+
+h1,
+.text-h1,
+h2,
+.text-h2,
+h3,
+.text-h3,
+h4,
+.text-h4 {
+   &:has(+ &) {
+      margin-block-end: var(--heading-heading-space);
+   }
+
+   &:has(+ p:not(&)) {
+      margin-block-end: var(--heading-paragraph-space);
+   }
+}

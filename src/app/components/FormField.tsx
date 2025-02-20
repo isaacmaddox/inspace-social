@@ -13,7 +13,12 @@ export default function FormField({ label, name, type = "text", placeholder, def
       <div className="form-field">
          <label htmlFor={name}>{label}</label>
          <input type={type} id={name} name={name} placeholder={placeholder} defaultValue={defaultValue} onChange={onChange} />
-         {error && <p className="field-error">{error}</p>}
+         {error &&
+            error.map((e, i) => (
+               <p className="field-error" key={i}>
+                  {e}
+               </p>
+            ))}
       </div>
    );
 }

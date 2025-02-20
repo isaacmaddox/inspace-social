@@ -20,19 +20,17 @@ export async function createUser(_: unknown, userData: FormData) {
       return { error: { confirmPassword: ["Passwords do not match"] }, fieldValues: data };
    }
 
-   const { firstName, lastName, displayName, handle, email, bio, password } = validatedFields.data;
+   const { handle, email, password } = validatedFields.data;
 
    const { salt, hash } = hashPassword(password);
+
 
    try {
       await prisma.user.create({
          data: {
-            firstName,
-            lastName,
-            displayName: displayName ?? `${firstName} ${lastName}`,
-            handle,
+            displayName: handle,
             email,
-            bio,
+            handle,
             password: hash,
             salt,
          },
@@ -40,10 +38,10 @@ export async function createUser(_: unknown, userData: FormData) {
    } catch (e) {
       if (e instanceof PrismaClientKnownRequestError) {
          if (e.code === "P2002") {
-            if (e.meta?.target === "email") {
+            if ((e.meta?.target as string[]).includes("email")) {
                return { error: { email: ["Email already in use"] }, fieldValues: data };
             }
-            if (e.meta?.target === "handle") {
+            if ((e.meta?.target as string[]).includes("handle")) {
                return { error: { handle: ["Handle already in use"] }, fieldValues: data };
             }
          }
