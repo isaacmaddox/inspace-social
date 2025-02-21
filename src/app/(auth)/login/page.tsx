@@ -1,4 +1,3 @@
-import AuthBackground from "@/app/components/AuthBackground";
 import LoginForm from "./LoginForm";
 import FeatureList from "../FeatureList";
 

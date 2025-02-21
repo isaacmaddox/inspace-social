@@ -14,7 +14,7 @@ export default function FeatureList() {
                   Only see what you want to
                </p>
                <p className="text-sm text-muted">
-                  On InSpace, you choose what you see. We don't have a recommendation engine. It's a feature, not a bug.
+                  On InSpace, you choose what you see. We don&apos;t have a recommendation engine. It&apos;s a feature, not a bug.
                </p>
             </li>
             <li>
@@ -35,7 +35,7 @@ export default function FeatureList() {
             </li>
          </ul>
          <Link href="/trending" className="btn btn-secondary btn-sm">
-            See what's trending
+            See what&apos;s trending
          </Link>
       </div>
    );

@@ -17,7 +17,7 @@ export async function getSession(): Promise<Session | null> {
       const decoded = verify(session.value, process.env.JWT_SECRET!) as Session;
 
       return decoded;
-   } catch (error) {
+   } catch {
       redirect("/logout");
    }
 }

@@ -25,4 +25,6 @@ export interface CreateUserData {
    salt: string;
 }
 
-export default new UserDAO(prisma);
+const userDAO = new UserDAO(prisma);
+
+export default userDAO;

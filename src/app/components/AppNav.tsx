@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Logo } from "./icons";
 import { useSession } from "../SessionProvider";
-import { logout } from "@/_actions/auth/logout";
 import { usePathname } from "next/navigation";
 import "@/_css/_components/app-nav.css";
 import NavProfileCard from "./user/NavProfileCard";

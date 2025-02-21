@@ -36,7 +36,7 @@ export default function LoginForm() {
          </button>
          <footer>
             <p className="text-sm text-muted">
-               Don't have an account? <Link href="/register">Register</Link>
+               Don&apos;t have an account? <Link href="/register">Register</Link>
             </p>
          </footer>
       </form>
