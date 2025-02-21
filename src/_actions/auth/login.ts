@@ -2,12 +2,12 @@
 
 import { LoginSchema, loginSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/db";
-import { hashPassword, omit } from "./util";
+import { hashPassword, omit } from "../util";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { sign } from "jsonwebtoken";
 
-export async function loginUser(_: unknown, userData: FormData) {
+export async function login(_: unknown, userData: FormData) {
    const data = Object.fromEntries(userData.entries()) as LoginSchema;
 
    const validatedFields = loginSchema.safeParse(data);

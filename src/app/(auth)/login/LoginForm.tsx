@@ -4,14 +4,14 @@ import FormField from "@/app/components/FormField";
 import "@/_css/forms.css";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { loginUser } from "@/_actions/auth/login";
+import { login } from "@/_actions/auth/login";
 import { useActionState } from "react";
 
 export default function LoginForm() {
    const params = useSearchParams();
    const email = params.get("email") ?? "";
 
-   const [formState, formAction, isPending] = useActionState<LoginFormState, FormData>(loginUser, {
+   const [formState, formAction, isPending] = useActionState<LoginFormState, FormData>(login, {
       error: {},
       fieldValues: {},
    });

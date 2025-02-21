@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/db";
 import { PrismaClient } from "@prisma/client";
 
 export class UserDAO {
@@ -8,8 +9,6 @@ export class UserDAO {
          data: {
             email: user.email,
             password: user.password,
-            firstName: user.firstName,
-            lastName: user.lastName,
             displayName: user.displayName,
             handle: user.handle,
             salt: user.salt,
@@ -21,9 +20,9 @@ export class UserDAO {
 export interface CreateUserData {
    email: string;
    password: string;
-   firstName: string;
-   lastName: string;
    displayName: string;
    handle: string;
    salt: string;
 }
+
+export default new UserDAO(prisma);

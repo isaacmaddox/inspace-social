@@ -1,6 +1,6 @@
 "use client";
 
-import { createUser } from "@/_actions/auth/create";
+import { register } from "@/_actions/auth/register";
 import FormField from "@/app/components/FormField";
 import { useActionState, useState } from "react";
 import "@/_css/forms.css";
@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function RegisterForm() {
    const [email, setEmail] = useState("");
-   const [formState, formAction, isPending] = useActionState<RegisterFormState, FormData>(createUser, {
+   const [formState, formAction, isPending] = useActionState<RegisterFormState, FormData>(register, {
       error: {},
       fieldValues: {},
    });
@@ -46,7 +46,7 @@ export default function RegisterForm() {
          <button className="btn-primary w-full" type="submit" disabled={isPending}>
             {isPending ? "Registering..." : "Register"}
          </button>
-         {formState.error.root && <p className="field-error">{formState.error.root}</p>}
+         {formState.error.root && <p className="form-error">{formState.error.root}</p>}
          <footer>
             <p className="text-sm text-muted">
                Already have an account? <Link href="/login">Login</Link>

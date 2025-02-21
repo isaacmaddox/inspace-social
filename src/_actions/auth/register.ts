@@ -1,14 +1,12 @@
 "use server";
 
-import { prisma } from "@/lib/db";
 import { SignupSchema, signupSchema } from "@/lib/definitions";
-import { hashPassword } from "./util";
+import { hashPassword } from "../util";
 import { redirect } from "next/navigation";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { emailClient } from "@/lib/email";
-import Welcome from "../../../emails/Welcome";
+import userDAO from "@/dal/user.dao";
 
-export async function createUser(_: unknown, userData: FormData) {
+export async function register(_: unknown, userData: FormData) {
    const data = Object.fromEntries(userData.entries()) as SignupSchema;
 
    const validatedFields = signupSchema.safeParse(data);
@@ -26,21 +24,12 @@ export async function createUser(_: unknown, userData: FormData) {
    const { salt, hash } = hashPassword(password);
 
    try {
-      await prisma.user.create({
-         data: {
-            displayName: handle,
-            email,
-            handle,
-            password: hash,
-            salt,
-         },
-      });
-
-      await emailClient.emails.send({
-         from: "InSpace <hello@mail.isaacmaddox.dev>",
-         to: email,
-         subject: "Welcome to InSpace",
-         react: <Welcome displayName={handle} />,
+      await userDAO.createUser({
+         email,
+         password: hash,
+         displayName: handle,
+         handle,
+         salt,
       });
    } catch (e) {
       if (e instanceof PrismaClientKnownRequestError) {
