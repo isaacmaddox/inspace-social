@@ -7,8 +7,8 @@
    --text-color-inverted: hsla(220 14% 96% / 1);
    --text-color-on-primary: hsla(220 14% 95% / 1);
 
-   --poly-background-light: hsl(221, 22%, 65%);
-   --poly-background-dark: hsl(220, 26%, 85%);
+   --poly-background-light: hsla(220 80% 20% / 1);
+   --poly-background-dark: hsla(220 80% 60% / 1);
 
    --surface-50: hsla(220 25% 97% / 1);
    --surface-100: hsla(220 25% 93% / 1);

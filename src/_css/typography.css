@@ -32,13 +32,20 @@ p,
    letter-spacing: var(--ls-p);
    margin: 0;
 
-   & + & {
+   &:not(.no-margin) + &:not(.no-margin) {
       margin-block-start: var(--paragraph-paragraph-space);
 
       &:is(.text-sm) {
          margin-block-start: var(--paragraph-small-space);
       }
    }
+}
+
+.text-normal {
+   font-size: var(--fs-normal);
+   font-weight: var(--fw-normal);
+   line-height: var(--lh-normal);
+   letter-spacing: var(--ls-normal);
 }
 
 .text-sm {
@@ -73,12 +80,18 @@ h3,
 .text-h3,
 h4,
 .text-h4 {
-   margin-block-start: 0;
-   &:has(+ &) {
-      margin-block-end: var(--heading-heading-space);
-   }
+   &:not(.no-margin) {
+      margin-block-start: 0;
+      &:has(+ &) {
+         margin-block-end: var(--heading-heading-space);
+      }
 
-   &:has(+ p:not(&)) {
-      margin-block-end: var(--heading-paragraph-space);
+      &:has(+ p:not(&)) {
+         margin-block-end: var(--heading-paragraph-space);
+      }
    }
+}
+
+.text-color-heading {
+   color: var(--text-color-heading);
 }

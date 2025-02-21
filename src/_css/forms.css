@@ -27,6 +27,10 @@
       opacity: 1;
       height: calc-size(auto, size);
 
+      & + & {
+         margin: 0;
+      }
+
       @starting-style {
          height: 0px;
          overflow: hidden;
@@ -59,7 +63,9 @@ textarea {
    font-size: 1rem;
    color: var(--text-color-body);
    width: 100%;
-   transition: border var(--transition-duration-short) ease, outline var(--transition-duration-short) ease;
+   transition:
+      border var(--transition-duration-short) ease,
+      outline var(--transition-duration-short) ease;
    outline: 3px solid transparent;
 
    &:focus-visible {
@@ -75,6 +81,8 @@ textarea {
    &:-webkit-autofill:focus,
    &:-webkit-autofill:hover,
    &:-webkit-autofill:active {
-      transition: background-color 0ms 600000s, color 0s 600000s !important;
+      transition:
+         background-color 0ms 600000s,
+         color 0s 600000s !important;
    }
 }

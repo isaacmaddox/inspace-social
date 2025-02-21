@@ -6,9 +6,39 @@ import { useSession } from "../SessionProvider";
 import { logout } from "@/_actions/auth/logout";
 import { usePathname } from "next/navigation";
 import "@/_css/_components/app-nav.css";
+import NavProfileCard from "./user/NavProfileCard";
+import { useState, useRef } from "react";
+import NavProfileMenu from "./user/NavProfileMenu";
 
 export default function AppNav() {
    const { user, isLoggedIn, isLoading } = useSession();
+   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+   const menuRef = useRef<HTMLDivElement>(null);
+
+   function handleClickOutside(e: MouseEvent) {
+      e.stopImmediatePropagation();
+
+      if (e.target !== menuRef.current && !(e.target as HTMLElement).closest(".nav-profile-menu")) {
+         setIsProfileMenuOpen(false);
+         document.removeEventListener("click", handleClickOutside);
+         document.removeEventListener("keydown", handleEscapeKey);
+      }
+   }
+
+   function handleEscapeKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+         setIsProfileMenuOpen(false);
+         document.removeEventListener("keydown", handleEscapeKey);
+         document.removeEventListener("click", handleClickOutside);
+      }
+   }
+
+   function handleProfileMenuClick() {
+      setIsProfileMenuOpen(true);
+
+      document.addEventListener("click", handleClickOutside);
+      document.addEventListener("keydown", handleEscapeKey);
+   }
 
    return (
       <nav className="app-nav">
@@ -26,7 +56,7 @@ export default function AppNav() {
             </ul>
          )}
          {!isLoading && !isLoggedIn && (
-            <>
+            <div>
                <p className="text-lg text-bold">Welcome to InSpace</p>
                <p className="text-sm text-muted">Log in to get started!</p>
                <div className="unauthenticated-nav-links">
@@ -37,18 +67,13 @@ export default function AppNav() {
                      Login
                   </Link>
                </div>
-            </>
+            </div>
          )}
          {user && (
-            <div className="nav-user-profile">
-               <p className="text-bold">{user?.displayName}</p>
-               <p className="text-sm text-muted">{user?.email}</p>
-               <p>
-                  <button className="btn btn-secondary w-full" onClick={logout}>
-                     Logout
-                  </button>
-               </p>
-            </div>
+            <>
+               <NavProfileCard user={user} onClick={handleProfileMenuClick} />
+               {isProfileMenuOpen && <NavProfileMenu />}
+            </>
          )}
       </nav>
    );

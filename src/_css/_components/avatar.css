@@ -1,0 +1,13 @@
+.user-avatar {
+   display: grid;
+   place-items: center;
+   border-radius: 50%;
+   background-image: linear-gradient(to bottom, var(--surface-300), var(--surface-200));
+   border: 1px solid var(--surface-400);
+   color: var(--text-color-heading);
+   aspect-ratio: 1;
+   width: fit-content;
+   padding-inline: 1.5em;
+   font-size: 0.9rem;
+   user-select: none;
+}

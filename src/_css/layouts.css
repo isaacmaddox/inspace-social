@@ -30,8 +30,12 @@
 
    @media (width < 1024px) {
       flex-direction: column;
-      align-items: start;
+      align-items: unset;
+      justify-content: center;
       align-content: center;
+      align-items: start;
+      height: fit-content;
+      min-height: 100%;
       gap: 2rem;
    }
 
@@ -40,7 +44,9 @@
       z-index: -2;
       inset: 0;
       opacity: 0.375;
-      transition: opacity 1s ease, filter 500ms ease;
+      transition:
+         opacity 1s ease,
+         filter 500ms ease;
 
       @starting-style {
          opacity: 0;
@@ -63,6 +69,12 @@
    .feature-list-container {
       svg {
          color: var(--text-color-heading);
+      }
+
+      .btn {
+         @media (width < 1024px) {
+            display: none;
+         }
       }
    }
 
@@ -90,8 +102,7 @@
 
       form {
          width: 100%;
-         background-color: hsla(var(--hsl-surface-100) / 0.25);
-         backdrop-filter: blur(3px);
+         background-color: var(--surface-100);
          border: 1px solid var(--surface-300);
          padding: 2em 1.5em;
          border-radius: var(--border-radius-lg);

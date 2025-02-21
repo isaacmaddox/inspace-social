@@ -1,0 +1,32 @@
+.nav-profile-menu {
+   position: absolute;
+   right: 0;
+   bottom: 1rem;
+   transform: translateX(calc(100% + 1rem));
+   background-color: var(--surface-100);
+   border: 1px solid var(--surface-300);
+   padding: var(--padding-lg);
+   border-radius: var(--border-radius-md);
+   min-width: 30ch;
+   transition:
+      transform 500ms cubic-bezier(0.19, 1, 0.22, 1),
+      opacity 300ms ease,
+      border-color var(--transition-duration-short) ease;
+   box-shadow: 0 5px 25px 0 hsla(var(--hsl-surface-400) / 0.15);
+
+   &:hover {
+      border-color: var(--surface-400);
+   }
+
+   @starting-style {
+      transform: translateX(100%);
+      opacity: 0;
+   }
+
+   .nav-profile-menu-links {
+      margin-block-start: 0.75em;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5em;
+   }
+}

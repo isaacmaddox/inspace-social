@@ -1,14 +1,17 @@
+import Link from "next/link";
 import { Checkmark, EditCircle, LetterMark, NoPhone } from "../components/icons";
 
 export default function FeatureList() {
    return (
       <div className="feature-list-container">
-         <LetterMark style={{ maxWidth: "150px" }} />
+         <Link href="/">
+            <LetterMark style={{ maxWidth: "150px" }} />
+         </Link>
          <ul className="feature-list" role="list">
             <li>
                <p className="text-bold">
                   <Checkmark height={"24"} width={"24"} />
-                  Choose what you want to see
+                  Only see what you want to
                </p>
                <p className="text-sm text-muted">
                   On InSpace, you choose what you see. We don't have a recommendation engine. It's a feature, not a bug.
@@ -31,6 +34,9 @@ export default function FeatureList() {
                <p className="text-sm text-muted">InSpace posts support Markdown, so you can write in your own style.</p>
             </li>
          </ul>
+         <Link href="/trending" className="btn btn-secondary btn-sm">
+            See what's trending
+         </Link>
       </div>
    );
 }

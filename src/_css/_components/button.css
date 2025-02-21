@@ -26,8 +26,11 @@ button,
    gap: 0.5em;
    text-decoration: none;
    width: fit-content;
-   transition: background-color var(--transition-duration-short) ease, box-shadow var(--transition-duration-short) ease,
-      border-color var(--transition-duration-short) ease, outline-color var(--transition-duration-short) ease;
+   transition:
+      background-color var(--transition-duration-short) ease,
+      box-shadow var(--transition-duration-short) ease,
+      border-color var(--transition-duration-short) ease,
+      outline-color var(--transition-duration-short) ease;
    outline: 2px solid transparent;
    outline-offset: 2px;
 
@@ -38,7 +41,7 @@ button,
 
    &:active {
       border-color: var(--surface-500);
-      outline-color: hsl(var(--hsl-surface-400) / 0.5);
+      outline-color: hsl(var(--hsl-surface-700) / 0.35);
    }
 
    &.w-full {
