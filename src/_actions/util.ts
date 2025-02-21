@@ -20,3 +20,15 @@ export function omit<D extends object, T extends keyof D>(data: D, keys: T[]): O
 
    return result;
 }
+
+export function pick<D extends object, T extends keyof D>(data: D, keys: T[]): Pick<D, T> {
+   const result = { ...data } as D;
+
+   Object.keys(result).forEach((key) => {
+      if (!keys.includes(key as T)) {
+         delete result[key as T];
+      }
+   });
+
+   return result;
+}

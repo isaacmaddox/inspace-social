@@ -1,11 +1,11 @@
 "use server";
 
 import { LoginSchema, loginSchema } from "@/lib/definitions";
-import { prisma } from "@/lib/db";
-import { hashPassword, omit } from "../util";
+import { hashPassword, omit, pick } from "../util";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { sign } from "jsonwebtoken";
+import { userDao } from "@/daos";
 
 export async function login(_: unknown, userData: FormData) {
    const data = Object.fromEntries(userData.entries()) as LoginSchema;
@@ -18,11 +18,7 @@ export async function login(_: unknown, userData: FormData) {
 
    const { email, password } = validatedFields.data;
 
-   const user = await prisma.user.findUnique({
-      where: {
-         email,
-      },
-   });
+   const user = await userDao.getUserByEmail(email);
 
    if (!user) {
       return { error: { email: ["Invalid email or password"] }, fieldValues: omit(data, ["password"]) };
@@ -35,7 +31,7 @@ export async function login(_: unknown, userData: FormData) {
    }
 
    const cookieStore = await cookies();
-   const sessionData = omit(user, ["password", "salt"]);
+   const sessionData = pick(user, ["id", "email"]);
    const session = sign(sessionData, process.env.JWT_SECRET!, {
       expiresIn: "30d",
    });

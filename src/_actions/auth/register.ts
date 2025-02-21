@@ -4,7 +4,7 @@ import { SignupSchema, signupSchema } from "@/lib/definitions";
 import { hashPassword } from "../util";
 import { redirect } from "next/navigation";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import userDAO from "@/dal/user.dao";
+import { userDao } from "@/daos";
 
 export async function register(_: unknown, userData: FormData) {
    const data = Object.fromEntries(userData.entries()) as SignupSchema;
@@ -24,7 +24,7 @@ export async function register(_: unknown, userData: FormData) {
    const { salt, hash } = hashPassword(password);
 
    try {
-      await userDAO.createUser({
+      await userDao.createUser({
          email,
          password: hash,
          displayName: handle,

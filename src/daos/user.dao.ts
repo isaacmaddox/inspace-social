@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/db";
 import { PrismaClient } from "@prisma/client";
 
 export class UserDAO {
@@ -15,6 +14,24 @@ export class UserDAO {
          },
       });
    }
+
+   async getUserByEmail(email: string) {
+      return this.prisma.user.findUnique({
+         where: { email },
+      });
+   }
+
+   async getUserByHandle(handle: string) {
+      return this.prisma.user.findUnique({
+         where: { handle },
+      });
+   }
+
+   async getUserById(id: number) {
+      return this.prisma.user.findUnique({
+         where: { id },
+      });
+   }
 }
 
 export interface CreateUserData {
@@ -24,7 +41,3 @@ export interface CreateUserData {
    handle: string;
    salt: string;
 }
-
-const userDAO = new UserDAO(prisma);
-
-export default userDAO;

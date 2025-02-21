@@ -4,7 +4,7 @@ import FormField from "@/app/components/FormField";
 import "@/_css/forms.css";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { login } from "@/_actions/auth/login";
+import { login } from "@/_actions/auth";
 import { useActionState } from "react";
 
 export default function LoginForm() {

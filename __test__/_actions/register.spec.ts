@@ -1,11 +1,11 @@
-import { register } from "@/_actions/auth/register";
+import { register } from "@/_actions/auth";
 import { redirect } from "next/navigation";
-import { UserDAO } from "@/dal/user.dao";
+import { UserDAO } from "@/daos/user.dao";
 import { prismaMock } from "../setup.spec";
 
 describe("Register Action", () => {
    beforeEach(() => {
-      jest.mock("../../src/dal/user.dao", () => {
+      jest.mock("../../src/daos/user.dao", () => {
          return {
             createUser: jest.fn().mockResolvedValue({
                id: 1,

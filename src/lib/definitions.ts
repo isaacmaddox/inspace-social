@@ -16,5 +16,11 @@ export const loginSchema = z.object({
    password: z.string().trim().min(1, "Password is required"),
 });
 
+export const createPostSchema = z.object({
+   content: z.string().trim().min(1, "Content is required"),
+   parentId: z.number().optional(),
+});
+
 export type SignupSchema = z.infer<typeof signupSchema>;
 export type LoginSchema = z.infer<typeof loginSchema>;
+export type CreatePostSchema = z.infer<typeof createPostSchema>;

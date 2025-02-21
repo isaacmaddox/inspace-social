@@ -10,7 +10,7 @@
    initial-value: white;
 }
 
-button,
+button:not(.btn-stripped),
 .btn {
    display: inline-flex;
    border: 1px solid var(--surface-200);

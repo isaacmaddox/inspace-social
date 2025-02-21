@@ -126,7 +126,7 @@
       --poly-background-light: hsl(221, 22%, 45%);
       --poly-background-dark: hsl(220, 26%, 15%);
 
-      --surface-50: hsla(220 25% 3% / 1);
+      --surface-50: hsla(220 25% 4% / 1);
       --surface-100: hsla(220 25% 7% / 1);
       --surface-200: hsla(220 23% 11% / 1);
       --surface-300: hsla(220 23% 15% / 1);
@@ -170,7 +170,7 @@
       --hsl-text-color-tooltip: 215 9% 50%;
       --hsl-text-color-inverted: 222 47% 11%;
 
-      --hsl-surface-50: 220 25% 3%;
+      --hsl-surface-50: 220 25% 4%;
       --hsl-surface-100: 220 25% 7%;
       --hsl-surface-200: 220 23% 11%;
       --hsl-surface-300: 220 23% 15%;

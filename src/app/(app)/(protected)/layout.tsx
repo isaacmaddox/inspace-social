@@ -1,4 +1,4 @@
-import { getSession } from "@/_actions/auth/session";
+import { getSession } from "@/_actions/auth";
 import { redirect } from "next/navigation";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {

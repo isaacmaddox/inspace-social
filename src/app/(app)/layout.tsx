@@ -1,14 +1,16 @@
 import AppNav from "../components/AppNav";
-import "@/_css/layouts.css";
-import SessionProvider from "../SessionProvider";
+import "@/_css/layouts/app.css";
+import AuthProvider from "../AuthProvider";
+import AppSidebar from "../components/AppSidebar";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
    return (
       <div className="app-layout">
-         <SessionProvider>
+         <AuthProvider>
             <AppNav />
-            <main>{children}</main>
-         </SessionProvider>
+            {children}
+            <AppSidebar />
+         </AuthProvider>
       </div>
    );
 }

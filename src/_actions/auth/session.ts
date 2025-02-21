@@ -22,4 +22,4 @@ export async function getSession(): Promise<Session | null> {
    }
 }
 
-export type Session = Omit<User, "password" | "salt">;
+export type Session = Pick<User, "id" | "email">;

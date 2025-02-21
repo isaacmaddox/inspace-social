@@ -1,4 +1,4 @@
-import { login } from "@/_actions/auth/login";
+import { login } from "@/_actions/auth";
 import { prismaMock } from "../setup.spec";
 
 describe("Login Action", () => {

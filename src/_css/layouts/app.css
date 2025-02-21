@@ -1,0 +1,63 @@
+.app-layout {
+   display: grid;
+   grid-template-columns: 1fr calc(55ch) 1fr;
+   justify-content: center;
+   grid-template-rows: 1fr;
+   grid-template-areas: "nav main sidebar";
+   position: relative;
+   min-height: 100dvh;
+
+   main {
+      position: relative;
+      width: 100%;
+      grid-area: main;
+
+      nav {
+         position: sticky;
+         top: 0;
+         inset-inline: 0;
+         background-color: transparent;
+         backdrop-filter: blur(4px);
+         border-bottom: 1px solid var(--surface-300);
+         animation: fadeIn 1ms linear forwards;
+         animation-timeline: scroll();
+         animation-range: 0 25dvh;
+      }
+
+      header,
+      section {
+         padding-inline: 2rem;
+      }
+
+      header {
+         padding-block: 3rem;
+         background-image: linear-gradient(to bottom, hsl(var(--hsl-surface-50) / 0.5), hsl(var(--hsl-surface-50) / 1)), url(/hex_background.png);
+         background-position: center;
+         background-repeat: no-repeat;
+         background-size: 110%;
+         overflow: hidden;
+
+         h1 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+         }
+      }
+   }
+
+   @media (width < 1100px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr max-content;
+      grid-template-areas: "main" "nav";
+   }
+}
+
+@keyframes fadeIn {
+   from {
+      background-color: transparent;
+   }
+
+   to {
+      background-color: hsl(var(--hsl-surface-50) / 0.75);
+   }
+}

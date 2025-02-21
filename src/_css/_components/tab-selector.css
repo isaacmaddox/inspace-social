@@ -1,0 +1,48 @@
+.tab-selector {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+   gap: 0;
+   padding: 0.25em;
+   gap: 0.25em;
+
+   .tab-button {
+      background-color: transparent;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-color-body);
+      font-size: var(--fs-normal);
+      padding: 1em 1em;
+      transition:
+         background-color var(--transition-duration-short) ease,
+         outline var(--transition-duration-short) ease;
+      border-radius: var(--border-radius-md);
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+
+      &:hover {
+         background-color: var(--surface-100);
+      }
+
+      &:active {
+         background-color: var(--surface-200);
+         outline-color: hsl(var(--hsl-surface-700) / 0.15);
+      }
+
+      &[aria-selected="true"] {
+         color: var(--text-color-heading);
+         position: relative;
+         font-weight: 600;
+
+         &::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            inset-inline: 0;
+            background: white;
+            height: 2px;
+            border-radius: var(--border-radius-md);
+         }
+      }
+   }
+}

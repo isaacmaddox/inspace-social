@@ -1,6 +1,6 @@
 "use client";
 
-import { register } from "@/_actions/auth/register";
+import { register } from "@/_actions/auth";
 import FormField from "@/app/components/FormField";
 import { useActionState, useState } from "react";
 import "@/_css/forms.css";
