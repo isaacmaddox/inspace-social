@@ -1,18 +1,19 @@
 "use client";
 
-import { getFollowingPosts, getTrendingPosts } from "@/_actions/post";
-import PostFeed from "@/app/components/PostFeed";
-import { TabSelector } from "@/app/components/TabSelector";
+import { getTrendingPosts } from "@/_actions/post";
+import { getFollowingPosts } from "@/_actions/post";
+import PostFeed from "../components/PostFeed";
+import { TabSelector } from "../components/TabSelector";
 import { useState } from "react";
 
-export default function ForYouFeed() {
-   const [tab, setTab] = useState("for-you");
+export default function AuthenticatedFeed() {
+   const [tab, setTab] = useState("following");
 
    return (
-      <main>
+      <>
          <nav>
             <TabSelector
-               onChangeFn={(value) => setTab(value)}
+               onChangeFn={setTab}
                options={[
                   {
                      label: "Following",
@@ -27,6 +28,6 @@ export default function ForYouFeed() {
          </nav>
          {tab === "following" && <PostFeed loadPostsFn={getFollowingPosts} />}
          {tab === "trending" && <PostFeed loadPostsFn={getTrendingPosts} />}
-      </main>
+      </>
    );
 }

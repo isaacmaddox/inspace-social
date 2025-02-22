@@ -1,16 +1,15 @@
 "use client";
 
-import { Post } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useUser } from "../AuthProvider";
 import "@/_css/_components/post-feed.css";
+import { FeedPost } from "@/daos/post.dao";
+import Post from "./Post";
 
-const POST_LIMIT = 10;
+const POST_LIMIT = 5;
 
-export default function PostFeed({ loadPostsFn }: PostFeedProps) {
-   const { user } = useUser();
-   const [posts, setPosts] = useState<Post[]>([]);
+export default function PostFeed({ loadPostsFn, simpleEnd = false }: PostFeedProps) {
+   const [posts, setPosts] = useState<FeedPost[]>([]);
    const [page, setPage] = useState(1);
    const [loading, setLoading] = useState(false);
    const [hasMore, setHasMore] = useState(true);
@@ -25,25 +24,22 @@ export default function PostFeed({ loadPostsFn }: PostFeedProps) {
          setLoading(true);
          setPage((prev) => prev + 1);
 
-         loadPostsFn({ userId: user?.id, page, limit: POST_LIMIT }).then((posts) => {
-            console.log(posts);
+         loadPostsFn({ page, limit: POST_LIMIT }).then((posts) => {
             setPosts((prev) => [...prev, ...posts]);
             setLoading(false);
             setHasMore(posts.length > POST_LIMIT - 1);
          });
       }
-   }, [inView, user, loading, hasMore, page, loadPostsFn]);
+   }, [inView, loading, hasMore, loadPostsFn, page]);
 
    return (
       <div className="post-feed">
          {posts.map((post) => (
-            <div key={post.id} style={{ height: "200px" }}>
-               <p>{post.content}</p>
-            </div>
+            <Post key={post.id} post={post} />
          ))}
-         <div ref={ref} />
+         <div style={{ position: "absolute", bottom: "50vh", height: "1px" }} ref={ref} />
          {loading && <div className="feed-loading-container">{loading && <p className="text-sm text-muted">Loading...</p>}</div>}
-         {!hasMore && (
+         {!hasMore && !simpleEnd && (
             <div className="feed-message-container">
                <span>
                   <p className="text-bold text-color-heading">No more posts</p>
@@ -54,10 +50,16 @@ export default function PostFeed({ loadPostsFn }: PostFeedProps) {
                </button>
             </div>
          )}
+         {!hasMore && simpleEnd && (
+            <div className="feed-loading-container">
+               <p className="text-sm text-muted">No more posts</p>
+            </div>
+         )}
       </div>
    );
 }
 
 interface PostFeedProps {
-   loadPostsFn: ({ userId, page, limit }: { userId?: number; page: number; limit: number }) => Promise<Post[]>;
+   loadPostsFn: ({ page, limit }: { page: number; limit: number }) => Promise<FeedPost[]>;
+   simpleEnd?: boolean;
 }

@@ -11,13 +11,10 @@
       background-size: cover;
       background-position: center;
       border-bottom: 1px solid var(--surface-300);
-      transition:
-         opacity var(--transition-duration-short) ease-in-out,
-         transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: opacity var(--transition-duration-short) ease;
 
       @starting-style {
          opacity: 0;
-         transform: translateY(10%);
       }
    }
 

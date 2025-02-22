@@ -1,9 +1,33 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+
+export type GetPostsParams = {
+   userId?: number;
+   limit: number;
+   page: number;
+};
 
 export class PostDAO {
-   constructor(private prisma: PrismaClient) {}
+   private postInclude(userId?: number): Prisma.PostInclude {
+      return {
+         author: {
+            select: {
+               displayName: true,
+               handle: true,
+            },
+         },
+         _count: {
+            select: {
+               likes: true,
+               comments: true,
+            },
+         },
+         likes: userId ? { where: { userId } } : undefined,
+      } as const;
+   }
 
-   async getFollowingPosts({ userId, limit = 10, page = 1 }: { userId: number; limit: number; page: number }) {
+   constructor(private prisma: PrismaClient) { }
+
+   async getFollowingPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
       return this.prisma.post.findMany({
          where: {
             parent: null,
@@ -15,20 +39,7 @@ export class PostDAO {
                },
             },
          },
-         include: {
-            author: {
-               select: {
-                  displayName: true,
-                  handle: true,
-               },
-            },
-            _count: {
-               select: {
-                  likes: true,
-                  comments: true,
-               },
-            },
-         },
+         include: this.postInclude(userId),
          orderBy: {
             updatedAt: "desc",
          },
@@ -37,7 +48,7 @@ export class PostDAO {
       });
    }
 
-   async getTrendingPosts({ limit = 10, page = 1 }: { limit: number; page: number }) {
+   async getTrendingPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
       return this.prisma.post.findMany({
          where: {
             parent: null,
@@ -57,13 +68,34 @@ export class PostDAO {
                updatedAt: "desc",
             },
          ],
-         include: {
-            author: {
-               select: {
-                  displayName: true,
-                  handle: true,
-               },
-            },
+         include: this.postInclude(userId),
+         take: limit,
+         skip: (page - 1) * limit,
+      });
+   }
+
+   async getNewestPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
+      return this.prisma.post.findMany({
+         where: {
+            parent: null,
+         },
+         include: this.postInclude(userId),
+         orderBy: {
+            updatedAt: "desc",
+         },
+         take: limit,
+         skip: (page - 1) * limit,
+      });
+   }
+
+   async getUserPosts({ uid, userId, limit = 10, page = 1 }: GetPostsParams & { uid: number }) {
+      return this.prisma.post.findMany({
+         where: {
+            authorId: uid,
+         },
+         include: this.postInclude(userId),
+         orderBy: {
+            updatedAt: "desc",
          },
          take: limit,
          skip: (page - 1) * limit,
@@ -75,6 +107,41 @@ export class PostDAO {
          data: post,
       });
    }
+
+   async likePost({ postId, userId }: { postId: number; userId: number }) {
+      return this.prisma.post.update({
+         where: {
+            id: postId,
+         },
+         data: {
+            likes: {
+               create: {
+                  userId,
+               },
+            },
+         },
+         include: this.postInclude(userId),
+      });
+   }
+
+   async unlikePost({ postId, userId }: { postId: number; userId: number }) {
+      return this.prisma.post.update({
+         where: {
+            id: postId,
+         },
+         data: {
+            likes: {
+               delete: {
+                  postId_userId: {
+                     postId,
+                     userId,
+                  },
+               },
+            },
+         },
+         include: this.postInclude(userId),
+      });
+   }
 }
 
 export interface CreatePostData {
@@ -82,3 +149,5 @@ export interface CreatePostData {
    authorId: number;
    parentId?: number;
 }
+
+export type FeedPost = Prisma.PromiseReturnType<typeof PostDAO.prototype.getTrendingPosts>[number];

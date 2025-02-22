@@ -34,7 +34,7 @@ export default function FeatureList() {
                <p className="text-sm text-muted">InSpace posts support Markdown, so you can write in your own style.</p>
             </li>
          </ul>
-         <Link href="/trending" className="btn btn-secondary btn-sm">
+         <Link href="/" className="btn btn-secondary btn-sm">
             See what&apos;s trending
          </Link>
       </div>

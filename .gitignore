@@ -3,6 +3,9 @@
 *.db
 *.db-journal
 
+# Script to make bogus posts
+populate.js
+
 # dependencies
 /node_modules
 /.pnp

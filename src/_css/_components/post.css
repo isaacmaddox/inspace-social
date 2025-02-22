@@ -1,0 +1,65 @@
+.post {
+   display: flex;
+   flex-direction: column;
+   gap: 1em;
+   padding: 1.5em 2rem;
+   border-bottom: 1px solid var(--surface-300);
+   transition: opacity 300ms ease;
+
+   @starting-style {
+      opacity: 0;
+   }
+
+   .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .post-author {
+         display: flex;
+         align-items: baseline;
+         gap: 0.5em;
+         text-decoration: none;
+
+         .author-handle {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+         }
+      }
+   }
+
+   .post-interaction-button {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--text-color-muted);
+
+      &:not(:disabled) {
+         cursor: pointer;
+      }
+
+      &:not(:disabled):hover {
+         color: var(--text-color-body);
+      }
+
+      &:not(:disabled):active {
+         color: var(--text-color-heading);
+      }
+
+      &.active {
+         color: var(--red-100);
+
+         &:hover {
+            color: var(--red-200);
+         }
+
+         &:active {
+            color: var(--red-300);
+         }
+      }
+   }
+}
