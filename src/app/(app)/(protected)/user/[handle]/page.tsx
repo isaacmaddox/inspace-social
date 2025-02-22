@@ -2,7 +2,7 @@ import { getSession } from "@/_actions/auth";
 import MarkdownContainer from "@/app/components/MarkdownContainer";
 import getUserByHandle from "@/_actions/user";
 import { notFound } from "next/navigation";
-import OtherUserProfileFeed from "../UserFeed";
+import UserProfileFeed from "../UserFeed";
 import "@/_css/layouts/profile.css";
 import Link from "next/link";
 import FollowButton from "../FollowButton";
@@ -33,7 +33,7 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
                )}
             </div>
          </header>
-         <OtherUserProfileFeed user={user} />
+         <UserProfileFeed user={user} />
          <div style={{ height: "200vh" }}></div>
       </main>
    );

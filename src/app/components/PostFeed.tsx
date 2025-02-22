@@ -1,9 +1,10 @@
 "use client";
 
-import { Post, User } from "@prisma/client";
+import { Post } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useUser } from "../AuthProvider";
+import "@/_css/_components/post-feed.css";
 
 const POST_LIMIT = 10;
 
@@ -15,33 +16,48 @@ export default function PostFeed({ loadPostsFn }: PostFeedProps) {
    const [hasMore, setHasMore] = useState(true);
    const { ref, inView } = useInView();
 
+   function resetFeed() {
+      window.location.reload();
+   }
+
    useEffect(() => {
-      if (inView && !loading && user && hasMore) {
+      if (inView && !loading && hasMore) {
          setLoading(true);
          setPage((prev) => prev + 1);
 
-         loadPostsFn(user!.id, page, POST_LIMIT).then((posts) => {
+         loadPostsFn({ userId: user?.id, page, limit: POST_LIMIT }).then((posts) => {
+            console.log(posts);
             setPosts((prev) => [...prev, ...posts]);
             setLoading(false);
-            setHasMore(posts.length > 0);
+            setHasMore(posts.length > POST_LIMIT - 1);
          });
       }
-   }, [inView, user]);
+   }, [inView, user, loading, hasMore, page, loadPostsFn]);
 
    return (
-      <div>
+      <div className="post-feed">
          {posts.map((post) => (
             <div key={post.id} style={{ height: "200px" }}>
                <p>{post.content}</p>
             </div>
          ))}
          <div ref={ref} />
-         {loading && <p className="text-sm text-muted">Loading...</p>}
-         {!hasMore && <p className="text-sm text-muted">No more posts</p>}
+         {loading && <div className="feed-loading-container">{loading && <p className="text-sm text-muted">Loading...</p>}</div>}
+         {!hasMore && (
+            <div className="feed-message-container">
+               <span>
+                  <p className="text-bold text-color-heading">No more posts</p>
+                  <p className="text-sm text-muted">Refresh your feed to see anything new</p>
+               </span>
+               <button onClick={resetFeed} className="btn btn-secondary">
+                  Refresh
+               </button>
+            </div>
+         )}
       </div>
    );
 }
 
 interface PostFeedProps {
-   loadPostsFn: (userId: number, page: number, limit: number) => Promise<Post[]>;
+   loadPostsFn: ({ userId, page, limit }: { userId?: number; page: number; limit: number }) => Promise<Post[]>;
 }

@@ -1,0 +1,28 @@
+.post-feed {
+   display: flex;
+   flex-direction: column;
+
+   .feed-message-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 2rem;
+      background-image: linear-gradient(to right, hsla(var(--hsl-primary-950) / 1), hsla(var(--hsl-surface-50) / 0.5)), url(/hex_background.png);
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid var(--surface-300);
+      transition:
+         opacity var(--transition-duration-short) ease-in-out,
+         transform 500ms cubic-bezier(0.19, 1, 0.22, 1);
+
+      @starting-style {
+         opacity: 0;
+         transform: translateY(10%);
+      }
+   }
+
+   .feed-loading-container {
+      text-align: center;
+      padding: 2rem 2rem;
+   }
+}

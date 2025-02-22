@@ -16,7 +16,7 @@ export function TabSelector({ options, onChangeFn }: { options: { label: string;
 
    useEffect(() => {
       onChangeFn?.(selected);
-   }, [selected]);
+   }, [selected, onChangeFn]);
 
    return (
       <div role="tablist" className="tab-selector">

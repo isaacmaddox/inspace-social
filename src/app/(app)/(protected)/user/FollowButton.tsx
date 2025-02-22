@@ -1,7 +1,5 @@
 "use client";
 
-import { User } from "@prisma/client";
-
-export default function FollowButton({ user }: { user: Omit<User, "password" | "salt"> }) {
+export default function FollowButton() {
    return <button className="btn btn-secondary">Follow</button>;
 }

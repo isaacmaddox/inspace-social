@@ -1,7 +1,10 @@
-export default function TrendingPage() {
+import { getTrendingPosts } from "@/_actions/post";
+import PostFeed from "@/app/components/PostFeed";
+
+export default async function TrendingPage() {
    return (
       <main>
-         <h1>Trending</h1>
+         <PostFeed loadPostsFn={getTrendingPosts} />
       </main>
    );
 }

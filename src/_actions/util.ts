@@ -1,3 +1,4 @@
+
 import crypto from "crypto";
 
 export function hashPassword(password: string, existingSalt?: string) {

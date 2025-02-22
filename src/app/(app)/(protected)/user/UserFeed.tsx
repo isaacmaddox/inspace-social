@@ -1,9 +1,8 @@
 "use client";
 
 import { TabSelector } from "@/app/components/TabSelector";
-import { User } from "@prisma/client";
 
-export default function OtherUserProfileFeed({ user }: { user: Omit<User, "password" | "salt"> }) {
+export default function UserProfileFeed() {
    return (
       <nav className="profile-nav">
          <TabSelector

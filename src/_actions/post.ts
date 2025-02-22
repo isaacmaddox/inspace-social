@@ -5,12 +5,13 @@ import { CreatePostSchema, createPostSchema } from "@/lib/definitions";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
 
-export const getFollowingPosts = async (userId: number, page: number = 1, limit: number = 10) => {
+export const getFollowingPosts = async ({ userId, page, limit }: { userId?: number; page: number; limit: number }) => {
+   if (!userId) return [];
    return await postDao.getFollowingPosts({ userId, limit, page });
 };
 
-export const getTrendingPosts = async (page: number = 1, limit: number = 10) => {
-   return await postDao.getTrendingPosts({ limit, page });
+export const getTrendingPosts = async ({ page, limit }: { page: number; limit: number }) => {
+   return postDao.getTrendingPosts({ limit, page });
 };
 
 export async function createPost(_: unknown, createPostData: FormData) {
