@@ -5,7 +5,7 @@ export const signupSchema = z.object({
       .string()
       .trim()
       .min(3, "Handle must be at least 3 characters long")
-      .regex(/^[a-zA-Z0-9_\-]+$/, "Handle cannot contain special characters or spaces"),
+      .regex(/^[a-zA-Z0-9_]+$/, "Handle cannot contain special characters or spaces"),
    email: z.string().trim().email("Invalid email address"),
    password: z.string().trim().min(1, "Password is required"),
    confirmPassword: z.string().trim().min(1, "Confirm password is required"),

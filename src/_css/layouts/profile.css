@@ -1,3 +1,7 @@
 .profile-actions {
    margin-block-start: 1.5em;
 }
+
+.profile-layout header .btn {
+   margin-block-start: 1em;
+}

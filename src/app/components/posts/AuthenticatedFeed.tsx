@@ -2,8 +2,8 @@
 
 import { getTrendingPosts } from "@/_actions/post";
 import { getFollowingPosts } from "@/_actions/post";
-import PostFeed from "../components/PostFeed";
-import { TabSelector } from "../components/TabSelector";
+import PostFeed from "@/app/components/posts/PostFeed";
+import { TabSelector } from "@/app/components/app/TabSelector";
 import { useState } from "react";
 
 export default function AuthenticatedFeed() {
@@ -26,8 +26,8 @@ export default function AuthenticatedFeed() {
                ]}
             />
          </nav>
-         {tab === "following" && <PostFeed loadPostsFn={getFollowingPosts} />}
-         {tab === "trending" && <PostFeed loadPostsFn={getTrendingPosts} />}
+         {tab === "following" && <PostFeed feedKey="following" loadPostsFn={getFollowingPosts} />}
+         {tab === "trending" && <PostFeed feedKey="trending" loadPostsFn={getTrendingPosts} />}
       </>
    );
 }

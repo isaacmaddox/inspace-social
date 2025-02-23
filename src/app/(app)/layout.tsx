@@ -1,7 +1,7 @@
-import AppNav from "../components/AppNav";
+import AppNav from "../components/app/AppNav";
 import "@/_css/layouts/app.css";
 import AuthProvider from "../AuthProvider";
-import AppSidebar from "../components/AppSidebar";
+import AppSidebar from "../components/app/AppSidebar";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
    return (

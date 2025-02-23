@@ -1,3 +1,4 @@
+
 import { PrismaClient } from "@prisma/client";
 import { mockDeep, mockReset, DeepMockProxy } from "jest-mock-extended";
 import { prisma } from "@/lib/db";
@@ -5,6 +6,13 @@ import { prisma } from "@/lib/db";
 // Mock redirect so it doesn't throw an error
 jest.mock("next/navigation", () => ({
    redirect: jest.fn(),
+}));
+
+// Mock cookies
+jest.mock("next/headers", () => ({
+   cookies: jest.fn(() => ({
+      get: jest.fn(),
+   })),
 }));
 
 // Mock prisma client so we don't interact with the database

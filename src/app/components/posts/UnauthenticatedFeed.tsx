@@ -1,11 +1,11 @@
 "use client";
 
 import { getNewestPosts, getTrendingPosts } from "@/_actions/post";
-import PostFeed from "../components/PostFeed";
-import { TabSelector } from "../components/TabSelector";
+import PostFeed from "@/app/components/posts/PostFeed";
+import { TabSelector } from "@/app/components/app/TabSelector";
 import { useState } from "react";
 
-export default function AuthenticatedFeed() {
+export default function UnauthenticatedFeed() {
    const [tab, setTab] = useState("following");
 
    return (
@@ -25,8 +25,8 @@ export default function AuthenticatedFeed() {
                ]}
             />
          </nav>
-         {tab === "trending" && <PostFeed loadPostsFn={getTrendingPosts} />}
-         {tab === "newest" && <PostFeed loadPostsFn={getNewestPosts} />}
+         {tab === "trending" && <PostFeed loadPostsFn={getTrendingPosts} feedKey="trending" />}
+         {tab === "newest" && <PostFeed loadPostsFn={getNewestPosts} feedKey="newest" />}
       </>
    );
 }

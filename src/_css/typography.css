@@ -66,6 +66,7 @@ p,
 a {
    font: inherit;
    color: var(--text-primary-300);
+   text-underline-offset: 0.25em;
 
    &:hover {
       color: var(--text-primary-100);

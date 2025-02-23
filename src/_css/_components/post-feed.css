@@ -20,6 +20,10 @@
 
    .feed-loading-container {
       text-align: center;
-      padding: 2rem 2rem;
+      padding: 2rem;
+   }
+
+   .feed-heading-container {
+      padding: 1rem 2rem;
    }
 }

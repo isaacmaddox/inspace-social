@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Logo } from "./icons";
-import { useUser } from "../AuthProvider";
+import { Logo } from "../icons";
+import { useUser } from "../../AuthProvider";
 import { usePathname } from "next/navigation";
 import "@/_css/_components/app-nav.css";
-import NavProfileCard from "./user/NavProfileCard";
+import NavProfileCard from "../user/NavProfileCard";
 
 export default function AppNav() {
    const { user, isLoggedIn, isLoading } = useUser();
@@ -40,7 +40,7 @@ export default function AppNav() {
                </div>
             </div>
          )}
-         {user && <NavProfileCard user={user} />}
+         {user && <NavProfileCard />}
       </nav>
    );
 }

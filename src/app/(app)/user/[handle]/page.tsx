@@ -1,11 +1,10 @@
 import { getSession } from "@/_actions/auth";
-import MarkdownContainer from "@/app/components/MarkdownContainer";
+import MarkdownContainer from "@/app/components/app/MarkdownContainer";
 import getUserByHandle from "@/_actions/user";
-import { notFound } from "next/navigation";
-import "@/_css/layouts/profile.css";
 import Link from "next/link";
 import FollowButton from "../FollowButton";
-import UserProfileFeed from "../UserProfileFeed";
+import UserProfileFeed from "../../../components/posts/UserProfileFeed";
+import "@/_css/layouts/profile.css";
 
 export default async function UserPage({ params }: { params: Promise<{ handle: string }> }) {
    const session = await getSession();
@@ -14,7 +13,17 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
    const user = await getUserByHandle(handle);
 
    if (!user) {
-      return notFound();
+      return (
+         <main className="profile-layout">
+            <header>
+               <h1 className="text-h2">Not Found</h1>
+               <p className="text-muted">The user you are looking for does not exist.</p>
+               <Link href="/" className="btn btn-sm btn-secondary">
+                  Go Home
+               </Link>
+            </header>
+         </main>
+      );
    }
 
    return (
@@ -35,7 +44,7 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
                </div>
             )}
          </header>
-         <UserProfileFeed userId={user.id} />
+         <UserProfileFeed userId={user.id} handle={user.handle} />
       </main>
    );
 }

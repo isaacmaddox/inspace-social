@@ -4,11 +4,12 @@ import { postDao } from "@/daos";
 import { CreatePostSchema, createPostSchema } from "@/lib/definitions";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
-import { GetPostsParams } from "@/daos/post.dao";
+import { GetPostsParams, FeedPost } from "@/daos/post.dao";
 
-export const getFollowingPosts = async ({ page, limit }: GetPostsParams) => {
+export const getFollowingPosts = async ({ page, limit }: GetPostsParams): Promise<FeedPost[]> => {
    const user = await getSession();
-   return await postDao.getFollowingPosts({ userId: user?.id, limit, page });
+   if (!user) return [];
+   return await postDao.getFollowingPosts({ userId: user.id, limit, page });
 };
 
 export const getTrendingPosts = async ({ page, limit }: GetPostsParams) => {
@@ -26,6 +27,21 @@ export const getUserPosts = async ({ uid, page, limit }: GetPostsParams & { uid:
    return await postDao.getUserPosts({ uid, userId: user?.id, limit, page });
 };
 
+export const getUserPopularPosts = async ({ uid, page, limit }: GetPostsParams & { uid: number }) => {
+   const user = await getSession();
+   return await postDao.getUserPopularPosts({ uid, userId: user?.id, limit, page });
+};
+
+export const getUserMentions = async ({ handle, page, limit }: GetPostsParams & { handle: string }) => {
+   const user = await getSession();
+   return await postDao.getUserMentions({ handle, userId: user?.id, limit, page });
+};
+
+export const getComments = async ({ postId, page, limit }: GetPostsParams & { postId: number }) => {
+   const user = await getSession();
+   return await postDao.getComments({ postId, userId: user?.id, limit, page });
+};
+
 export const likePost = async ({ postId }: { postId: number }) => {
    const user = await getSession();
    if (!user) return;
@@ -36,6 +52,10 @@ export const unlikePost = async ({ postId }: { postId: number }) => {
    const user = await getSession();
    if (!user) return;
    return postDao.unlikePost({ postId, userId: user.id });
+};
+
+export const getPostById = async (postId: number) => {
+   return postDao.getPostById(postId);
 };
 
 export async function createPost(_: unknown, createPostData: FormData) {
@@ -49,6 +69,8 @@ export async function createPost(_: unknown, createPostData: FormData) {
 
    const { content, parentId } = validatedFields.data;
 
+   const processedContent = content.replaceAll(/@(\S+)/g, `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`);
+
    const user = await getSession();
 
    if (!user) {
@@ -57,7 +79,7 @@ export async function createPost(_: unknown, createPostData: FormData) {
 
    return await postDao.createPost({
       authorId: user.id,
-      content,
+      content: processedContent,
       parentId: parentId ?? undefined,
    });
 }
