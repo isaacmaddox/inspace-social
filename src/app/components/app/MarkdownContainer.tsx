@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -18,9 +19,13 @@ export default function MarkdownContainer({ children, ...props }: { children: st
                </p>
             ),
             a: ({ children, ...props }) => (
-               <a className="text-link" target={props.href?.startsWith(process.env.NEXT_PUBLIC_APP_URL!) ? "_self" : "_blank"} {...props}>
+               <Link
+                  className="text-link"
+                  target={props.href?.startsWith(process.env.NEXT_PUBLIC_APP_URL!) ? "_self" : "_blank"}
+                  href={props.href ?? "/"}
+                  {...props}>
                   {children}
-               </a>
+               </Link>
             ),
          }}>
          {children}

@@ -13,6 +13,8 @@ export default function RegisterForm() {
       fieldValues: {},
    });
 
+   localStorage.clear();
+
    return (
       <form action={formAction} data-testid="register-form">
          <header>

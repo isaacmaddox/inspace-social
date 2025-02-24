@@ -11,6 +11,7 @@ export class PostDAO {
       return {
          author: {
             select: {
+               id: true,
                displayName: true,
                handle: true,
             },
@@ -24,13 +25,27 @@ export class PostDAO {
          likes: userId ? { where: { userId } } : undefined,
       } as const;
    }
+   private popularOrderBy: Prisma.PostOrderByWithRelationInput[] = [
+      {
+         comments: {
+            _count: "desc",
+         },
+      },
+      {
+         likes: {
+            _count: "desc",
+         },
+      },
+      { updatedAt: "desc" },
+   ];
 
-   constructor(private prisma: PrismaClient) { }
+   constructor(private prisma: PrismaClient) {}
 
    async getFollowingPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
       return this.prisma.post.findMany({
          where: {
             parent: null,
+            draft: false,
             author: {
                followers: {
                   some: {
@@ -40,9 +55,7 @@ export class PostDAO {
             },
          },
          include: this.postInclude(userId),
-         orderBy: {
-            updatedAt: "desc",
-         },
+         orderBy: this.popularOrderBy,
          take: limit,
          skip: (page - 1) * limit,
       });
@@ -52,22 +65,9 @@ export class PostDAO {
       return this.prisma.post.findMany({
          where: {
             parent: null,
+            draft: false,
          },
-         orderBy: [
-            {
-               comments: {
-                  _count: "desc",
-               },
-            },
-            {
-               likes: {
-                  _count: "desc",
-               },
-            },
-            {
-               updatedAt: "desc",
-            },
-         ],
+         orderBy: this.popularOrderBy,
          include: this.postInclude(userId),
          take: limit,
          skip: (page - 1) * limit,
@@ -78,6 +78,7 @@ export class PostDAO {
       return this.prisma.post.findMany({
          where: {
             parent: null,
+            draft: false,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -92,6 +93,22 @@ export class PostDAO {
       return this.prisma.post.findMany({
          where: {
             authorId: uid,
+            draft: false,
+         },
+         include: this.postInclude(userId),
+         orderBy: {
+            updatedAt: "desc",
+         },
+         take: limit,
+         skip: (page - 1) * limit,
+      });
+   }
+
+   async getUserDrafts({ uid, userId, limit = 10, page = 1 }: GetPostsParams & { uid: number }) {
+      return this.prisma.post.findMany({
+         where: {
+            authorId: uid,
+            draft: true,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -106,24 +123,23 @@ export class PostDAO {
       return this.prisma.post.findMany({
          where: {
             authorId: uid,
+            parent: null,
+            draft: false,
          },
          include: this.postInclude(userId),
-         orderBy: [
-            { comments: { _count: "desc" } },
-            { likes: { _count: "desc" } },
-            { updatedAt: "desc" },
-         ],
+         orderBy: this.popularOrderBy,
          take: limit,
          skip: (page - 1) * limit,
       });
    }
 
-   async getUserMentions({ handle, userId, limit = 10, page = 1 }: GetPostsParams & { handle: string; }) {
+   async getUserMentions({ handle, userId, limit = 10, page = 1 }: GetPostsParams & { handle: string }) {
       return this.prisma.post.findMany({
          where: {
             content: {
                contains: `[@${handle}]`,
             },
+            draft: false,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -147,13 +163,10 @@ export class PostDAO {
       return this.prisma.post.findMany({
          where: {
             parentId: postId,
+            draft: false,
          },
          include: this.postInclude(userId),
-         orderBy: [
-            { comments: { _count: "desc" } },
-            { likes: { _count: "desc" } },
-            { updatedAt: "desc" },
-         ],
+         orderBy: this.popularOrderBy,
          take: limit,
          skip: (page - 1) * limit,
       });
@@ -204,6 +217,7 @@ export interface CreatePostData {
    content: string;
    authorId: number;
    parentId?: number;
+   draft: boolean;
 }
 
 export type FeedPost = Prisma.PromiseReturnType<typeof PostDAO.prototype.getTrendingPosts>[number];

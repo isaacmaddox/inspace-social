@@ -3,7 +3,6 @@
 import { postDao } from "@/daos";
 import { CreatePostSchema, createPostSchema } from "@/lib/definitions";
 import { getSession } from "./auth";
-import { redirect } from "next/navigation";
 import { GetPostsParams, FeedPost } from "@/daos/post.dao";
 
 export const getFollowingPosts = async ({ page, limit }: GetPostsParams): Promise<FeedPost[]> => {
@@ -24,7 +23,14 @@ export const getNewestPosts = async ({ page, limit }: GetPostsParams) => {
 
 export const getUserPosts = async ({ uid, page, limit }: GetPostsParams & { uid: number }) => {
    const user = await getSession();
+
    return await postDao.getUserPosts({ uid, userId: user?.id, limit, page });
+};
+
+export const getUserDrafts = async ({ page, limit }: GetPostsParams) => {
+   const user = await getSession();
+   if (!user) return [];
+   return await postDao.getUserDrafts({ uid: user.id, limit, page });
 };
 
 export const getUserPopularPosts = async ({ uid, page, limit }: GetPostsParams & { uid: number }) => {
@@ -59,27 +65,29 @@ export const getPostById = async (postId: number) => {
 };
 
 export async function createPost(_: unknown, createPostData: FormData) {
+   const user = await getSession();
+   if (!user) return { success: false };
+
    const data = Object.fromEntries(createPostData.entries()) as unknown as CreatePostSchema;
 
    const validatedFields = createPostSchema.safeParse(data);
 
    if (!validatedFields.success) {
-      return { error: validatedFields.error.flatten().fieldErrors, fieldValues: data };
+      return { success: false, fieldValues: data };
    }
 
    const { content, parentId } = validatedFields.data;
 
    const processedContent = content.replaceAll(/@(\S+)/g, `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`);
 
-   const user = await getSession();
-
-   if (!user) {
-      redirect("/login");
-   }
-
-   return await postDao.createPost({
+   const post = await postDao.createPost({
       authorId: user.id,
       content: processedContent,
       parentId: parentId ?? undefined,
+      draft: data.type === "draft",
    });
+
+   if (!post) return { success: false };
+
+   return { success: true };
 }

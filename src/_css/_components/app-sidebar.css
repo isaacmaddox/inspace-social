@@ -1,5 +1,5 @@
 .app-sidebar {
-   border-left: 1px solid var(--surface-300);
+   /* border-left: 1px solid var(--surface-300); */
    padding-block: 3rem 1rem;
    padding-inline: 2rem;
    width: min(30ch, 100%);

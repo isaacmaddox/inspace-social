@@ -16,6 +16,8 @@ export default function LoginForm() {
       fieldValues: {},
    });
 
+   localStorage.clear();
+
    return (
       <form action={formAction} data-testid="login-form">
          <header>

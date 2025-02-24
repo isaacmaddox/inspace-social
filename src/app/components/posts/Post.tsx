@@ -9,6 +9,7 @@ import { likePost, unlikePost } from "@/_actions/post";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/AuthProvider";
 import { useModal } from "@/app/ModalProvider";
+import { Edit } from "../icons";
 
 const numberFormatter = new Intl.NumberFormat("en-us");
 
@@ -22,6 +23,7 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
    const likeButtonClick = async () => {
       if (!user) {
          signupModal?.open();
+         return;
       }
 
       if (liked) {
@@ -31,7 +33,6 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
          setLiked(false);
       } else {
          const updatedPost = await likePost({ postId: post.id });
-         // TODO: Add modal prompting user to login
          if (!updatedPost) return;
          setPost(updatedPost);
          setLiked(true);
@@ -43,17 +44,21 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
          e.stopPropagation();
          if (e.target instanceof HTMLAnchorElement || e.target instanceof HTMLButtonElement || (e.target as HTMLElement).closest(".post-author"))
             return;
-         router.push(`/user/${post.author.handle}/post/${post.id}`, { scroll: false });
+         router.push(`/user/${post.author.handle}/post/${post.id}`);
       },
       [post.id, router, post.author.handle]
    );
+
+   const handleEditClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+   }, []);
 
    return (
       post && (
          <div className={`post ${noClick ? "no-click" : ""}`} onClick={noClick ? undefined : handleClick}>
             <div className="post-header">
                <Link href={`/user/${post.author.handle}`} className="post-author">
-                  <p className="text-normal text-color-heading no-margin author-name">{post.author.displayName}</p>
+                  <p className="text-base text-color-heading no-margin author-name">{post.author.displayName}</p>
                   <p className="text-sm text-muted author-handle">@{post.author.handle}</p>
                </Link>
                <p className="text-sm text-muted">
@@ -74,6 +79,12 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
                   </button>{" "}
                   &bull; <button className="btn-stripped post-interaction-button">{numberFormatter.format(post._count.comments)} comments</button>
                </p>
+               {post.author.id === user?.id && (
+                  <button className="btn-stripped post-actions-button" onClick={handleEditClick}>
+                     <Edit />
+                     <span className="sr-only">Edit</span>
+                  </button>
+               )}
             </div>
          </div>
       )

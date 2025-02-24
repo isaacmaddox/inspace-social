@@ -3,7 +3,7 @@
    padding-block: 3rem 1rem;
    padding-inline: 2rem;
    width: min(30ch, 100%);
-   border-right: 1px solid var(--surface-300);
+   /* border-right: 1px solid var(--surface-300); */
    justify-self: end;
    display: flex;
    flex-direction: column;
@@ -33,6 +33,8 @@
 
       a {
          display: flex;
+         align-items: center;
+         gap: 0.75rem;
          color: var(--text-color-muted);
          text-decoration: none;
          font-weight: 500;
@@ -41,11 +43,15 @@
          border-radius: var(--border-radius-md);
          outline: 2px solid transparent;
          outline-offset: 2px;
-         transition:
-            background-color var(--transition-duration-short) ease,
-            outline var(--transition-duration-short) ease;
+         transition-property: background-color, outline, color;
+         transition-duration: var(--transition-duration-short);
+         transition-timing-function: ease;
 
-         &:hover,
+         &:hover {
+            background-color: var(--surface-100);
+            color: var(--text-color-heading);
+         }
+
          &.active {
             background-color: var(--surface-200);
             color: var(--text-color-heading);

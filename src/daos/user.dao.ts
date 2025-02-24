@@ -32,6 +32,26 @@ export class UserDAO {
          where: { id },
       });
    }
+
+   async checkIfFollowing(userId: number, followingId: number) {
+      return this.prisma.user.findUnique({
+         where: { id: userId, following: { some: { id: followingId } } },
+      });
+   }
+
+   async followUser(userId: number, followingId: number) {
+      return this.prisma.user.update({
+         where: { id: userId },
+         data: { following: { connect: { id: followingId } } },
+      });
+   }
+
+   async unfollowUser(userId: number, followingId: number) {
+      return this.prisma.user.update({
+         where: { id: userId },
+         data: { following: { disconnect: { id: followingId } } },
+      });
+   }
 }
 
 export interface CreateUserData {

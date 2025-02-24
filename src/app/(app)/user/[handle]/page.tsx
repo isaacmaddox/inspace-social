@@ -53,11 +53,16 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
             {session && (
                <div className="profile-actions">
                   {session.id === user.id ? (
-                     <Link href="/settings/profile" className="btn btn-secondary w-full">
-                        Edit Profile
-                     </Link>
+                     <>
+                        <Link href="/settings/profile" className="btn btn-secondary w-full">
+                           Edit Profile
+                        </Link>
+                        <Link href={`/user/${user.handle}/drafts`} className="btn  w-full">
+                           Drafts
+                        </Link>
+                     </>
                   ) : (
-                     <FollowButton />
+                     <FollowButton userId={user.id} />
                   )}
                </div>
             )}

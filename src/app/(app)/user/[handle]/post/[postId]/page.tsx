@@ -5,6 +5,7 @@ import Post from "@/app/components/posts/Post";
 import PostCommentFeed from "@/app/components/posts/PostCommentFeed";
 import { cache } from "react";
 import { Metadata } from "next";
+import PostPageNav from "@/app/components/app/PostPageNav";
 
 const getPost = cache(getPostById);
 
@@ -37,6 +38,7 @@ export default async function PostPage({ params }: { params: Promise<{ handle: s
 
    return (
       <main className="profile-layout post-feed">
+         <PostPageNav />
          <Post noClick post={post} />
          <div className="feed-heading-container">
             <h2 className="text-lg text-bold text-color-heading">Comments</h2>

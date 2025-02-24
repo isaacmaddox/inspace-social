@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Logo } from "../icons";
+import { Logo, Home, Settings, Bell, Group, Following, Drafts } from "../icons";
 import { useUser } from "../../AuthProvider";
 import { usePathname } from "next/navigation";
 import "@/_css/_components/app-nav.css";
 import NavProfileCard from "../user/NavProfileCard";
+import { useModal } from "@/app/ModalProvider";
 
 export default function AppNav() {
    const { user, isLoggedIn, isLoading } = useUser();
+   const createPostModal = useModal("createpost");
 
    return (
       <nav className="app-nav">
@@ -20,16 +22,38 @@ export default function AppNav() {
          </header>
          {!isLoading && isLoggedIn && (
             <ul role="list" className="nav-links">
-               <NavLink href="/">Home</NavLink>
-               <NavLink href="/settings">Settings</NavLink>
-               <NavLink href="/notifications">Notifications</NavLink>
-               <NavLink href="/groups">Groups</NavLink>
+               <NavLink href="/">
+                  <Home />
+                  Home
+               </NavLink>
+               <NavLink href="/notifications">
+                  <Bell />
+                  Notifications
+               </NavLink>
+               <NavLink href="/groups">
+                  <Following />
+                  Following
+               </NavLink>
+               <NavLink href="/groups">
+                  <Group />
+                  Groups
+               </NavLink>
+               <NavLink href="/settings">
+                  <Settings />
+                  Settings
+               </NavLink>
+               <NavLink href={`/user/${user?.handle}/drafts`}>
+                  <Drafts />
+                  Drafts
+               </NavLink>
+               <button className="btn btn-primary w-full" onClick={() => createPostModal?.open()}>
+                  Create Post
+               </button>
             </ul>
          )}
          {!isLoading && !isLoggedIn && (
             <div>
-               <p className="text-lg text-bold">Welcome to InSpace</p>
-               <p className="text-sm text-muted">Log in to get started!</p>
+               <p className="text-lg text-color-heading text-bold">Welcome to InSpace</p>
                <div className="unauthenticated-nav-links">
                   <Link href="/register" className="btn btn-primary w-full">
                      Sign Up

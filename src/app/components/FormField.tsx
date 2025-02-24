@@ -1,5 +1,5 @@
 interface FormFieldProps {
-   label: string;
+   label?: string | undefined;
    name: string;
    type: string;
    placeholder?: string | undefined;
@@ -13,7 +13,19 @@ export default function FormField({ label, name, type = "text", placeholder, def
    return (
       <div className="form-field">
          <label htmlFor={name}>{label}</label>
-         <input type={type} id={name} name={name} placeholder={placeholder} defaultValue={defaultValue} onChange={onChange} autoFocus={autoFocus} />
+         {type === "textarea" ? (
+            <textarea id={name} name={name} placeholder={placeholder} defaultValue={defaultValue} autoFocus={autoFocus} />
+         ) : (
+            <input
+               type={type}
+               id={name}
+               name={name}
+               placeholder={placeholder}
+               defaultValue={defaultValue}
+               onChange={onChange}
+               autoFocus={autoFocus}
+            />
+         )}
          {error &&
             error.map((e, i) => (
                <p className="field-error" key={i}>

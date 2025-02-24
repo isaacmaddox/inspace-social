@@ -1,0 +1,14 @@
+.create-post-modal {
+   --_width: min(55ch, 100% - 2rem);
+   --_padding: 2em;
+
+   form textarea {
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      resize: none;
+      color: var(--text-color-body);
+      font-size: var(--fs-p);
+      outline: none;
+   }
+}
