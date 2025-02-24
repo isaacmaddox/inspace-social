@@ -3,24 +3,29 @@
    flex-direction: column;
 
    .feed-message-container {
+      --_bg-img: url(/hex_background_light.png);
+
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 2rem 2rem;
-      background-image: linear-gradient(to right, hsla(var(--hsl-primary-950) / 1), hsla(var(--hsl-surface-50) / 0.5)), url(/hex_background.png);
+      background-image: linear-gradient(to right, hsla(var(--hsl-surface-200) / 1) 10%, hsla(var(--hsl-surface-50) / 0.5)), var(--_bg-img);
       background-size: cover;
       background-position: center;
       border-bottom: 1px solid var(--surface-300);
-      transition: opacity var(--transition-duration-short) ease;
 
-      @starting-style {
-         opacity: 0;
+      @media (prefers-color-scheme: dark) {
+         --_bg-img: url(/hex_background.png);
       }
    }
 
    .feed-loading-container {
       text-align: center;
       padding: 2rem;
+
+      button {
+         margin-block-start: 0.5em;
+      }
    }
 
    .feed-heading-container {

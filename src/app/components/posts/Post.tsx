@@ -7,15 +7,23 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 import { likePost, unlikePost } from "@/_actions/post";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/app/AuthProvider";
+import { useModal } from "@/app/ModalProvider";
 
 const numberFormatter = new Intl.NumberFormat("en-us");
 
 export default function Post({ post: startingPost, noClick = false }: { post: FeedPost; noClick?: boolean }) {
+   const { user } = useUser();
    const [post, setPost] = useState<FeedPost>(startingPost);
    const [liked, setLiked] = useState(post.likes?.length > 0);
    const router = useRouter();
+   const signupModal = useModal("logintocontribute");
 
    const likeButtonClick = async () => {
+      if (!user) {
+         signupModal?.open();
+      }
+
       if (liked) {
          const updatedPost = await unlikePost({ postId: post.id });
          if (!updatedPost) return;

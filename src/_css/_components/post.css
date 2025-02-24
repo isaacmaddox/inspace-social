@@ -4,9 +4,7 @@
    gap: 1em;
    padding: 1.5em 2rem;
    border-bottom: 1px solid var(--surface-300);
-   transition:
-      opacity 300ms ease,
-      background-color var(--transition-duration-short) ease;
+   transition: background-color var(--transition-duration-short) ease;
 
    &:not(.no-click) {
       cursor: pointer;
@@ -14,10 +12,6 @@
       &:hover {
          background-color: var(--surface-100);
       }
-   }
-
-   @starting-style {
-      opacity: 0;
    }
 
    .post-header {

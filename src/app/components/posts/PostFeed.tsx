@@ -28,10 +28,20 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isCo
    const [page, setPage] = useState(1);
    const [loading, setLoading] = useState(false);
    const [hasMore, setHasMore] = useState(true);
+   const [error, setError] = useState(false);
    const { ref, inView } = useInView();
 
    function resetFeed() {
-      window.location.reload();
+      localStorage.clear();
+      updateState({
+         posts: [],
+         page: 1,
+         hasMore: true,
+      });
+   }
+
+   function tryAgain() {
+      setError(false);
    }
 
    function updateState({ posts, page, hasMore }: { posts: FeedPost[]; page: number; hasMore: boolean }) {
@@ -45,15 +55,13 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isCo
       const shouldLoadLocalStorage = posts.length === 0 && localStorageData && localStorageData.posts.length > 0;
       const shouldLoadMore = inView && hasMore;
 
-      if (shouldLoadLocalStorage) {
-         updateState({
-            ...localStorageData,
-            posts: localStorageData.posts.map((post) => ({ ...post, createdAt: new Date(post.createdAt), updatedAt: new Date(post.updatedAt) })),
-         });
-      } else if (shouldLoadMore) {
+      async function loadPosts() {
          if (!isComments) localStorage.clear();
+         if (error) return;
+         setError(false);
          setLoading(true);
-         loadPostsFn({ page, limit: POST_LIMIT }).then((newPosts) => {
+         try {
+            const newPosts = await loadPostsFn({ page, limit: POST_LIMIT });
             updateState({
                posts: [...posts, ...newPosts],
                page: page + 1,
@@ -61,9 +69,21 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isCo
             });
             setLoading(false);
             setLocalStorageData(feedKey, { posts: [...posts, ...newPosts], page: page + 1, hasMore: newPosts.length > POST_LIMIT - 1 });
-         });
+         } catch {
+            setError(true);
+            setLoading(false);
+         }
       }
-   }, [inView, hasMore, loading, loadPostsFn, feedKey, page, posts, isComments]);
+
+      if (shouldLoadLocalStorage) {
+         updateState({
+            ...localStorageData,
+            posts: localStorageData.posts.map((post) => ({ ...post, createdAt: new Date(post.createdAt), updatedAt: new Date(post.updatedAt) })),
+         });
+      } else if (shouldLoadMore) {
+         loadPosts();
+      }
+   }, [inView, hasMore, loading, loadPostsFn, feedKey, page, posts, isComments, error]);
 
    return (
       <div className="post-feed">
@@ -86,6 +106,14 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isCo
          {!hasMore && simpleEnd && (
             <div className="feed-loading-container">
                <p className="text-sm text-muted">No more posts</p>
+            </div>
+         )}
+         {error && (
+            <div className="feed-loading-container">
+               <p className="text-sm text-muted">There was a problem getting new posts.</p>
+               <button className="btn-sm" onClick={tryAgain}>
+                  Try again
+               </button>
             </div>
          )}
       </div>

@@ -41,6 +41,10 @@ button:not(.btn-stripped),
 
    &:active {
       border-color: var(--surface-500);
+   }
+
+   &:active,
+   &:focus {
       outline-color: hsl(var(--hsl-surface-700) / 0.35);
    }
 
@@ -72,7 +76,8 @@ button:not(.btn-stripped),
          --button-bg-gradient-end: var(--primary-500);
       }
 
-      &:active {
+      &:active,
+      &:focus {
          outline-color: hsla(var(--hsl-primary-400) / 0.5);
       }
    }
