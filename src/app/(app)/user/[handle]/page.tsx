@@ -5,12 +5,30 @@ import Link from "next/link";
 import FollowButton from "../FollowButton";
 import UserProfileFeed from "../../../components/posts/UserProfileFeed";
 import "@/_css/layouts/profile.css";
+import { cache } from "react";
+import { Metadata } from "next";
+
+const getUser = cache(getUserByHandle);
+
+export const revalidate = 360;
+
+export const generateMetadata = async ({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> => {
+   const { handle } = await params;
+   const user = await getUser(handle);
+
+   if (!user) return { title: "User Not Found | InSpace" };
+
+   return {
+      title: `${user?.displayName} | InSpace`,
+      description: user?.bio,
+   };
+};
 
 export default async function UserPage({ params }: { params: Promise<{ handle: string }> }) {
    const session = await getSession();
    const handle = (await params).handle;
 
-   const user = await getUserByHandle(handle);
+   const user = await getUser(handle);
 
    if (!user) {
       return (
@@ -19,7 +37,7 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
                <h1 className="text-h2">Not Found</h1>
                <p className="text-muted">The user you are looking for does not exist.</p>
                <Link href="/" className="btn btn-sm btn-secondary">
-                  Go Home
+                  My Feed
                </Link>
             </header>
          </main>
