@@ -40,10 +40,7 @@ export default async function PostPage({ params }: { params: Promise<{ handle: s
       <main className="profile-layout post-feed">
          <PostPageNav />
          <Post noClick post={post} />
-         <div className="feed-heading-container">
-            <h2 className="text-lg text-bold text-color-heading">Comments</h2>
-         </div>
-         <PostCommentFeed postId={Number(postId)} handle={handle} />
+         {!post.draft && <PostCommentFeed postId={Number(postId)} handle={handle} />}
       </main>
    );
 }

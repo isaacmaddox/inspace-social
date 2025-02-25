@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useCallback, useState } from "react";
 import { likePost, unlikePost } from "@/_actions/post";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/app/AuthProvider";
-import { useModal } from "@/app/ModalProvider";
+import { useUser } from "@/app/components/AuthProvider";
+import { useModal } from "@/app/components/ModalProvider";
 import { Edit } from "../icons";
 
 const numberFormatter = new Intl.NumberFormat("en-us");
@@ -77,7 +77,10 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
                   <button className={`btn-stripped post-interaction-button ${liked ? "active" : ""}`} onClick={likeButtonClick}>
                      {numberFormatter.format(post._count.likes)} likes
                   </button>{" "}
-                  &bull; <button className="btn-stripped post-interaction-button">{numberFormatter.format(post._count.comments)} comments</button>
+                  &bull;{" "}
+                  <Link href={`/user/${post.author.handle}/post/${post.id}`} className="btn btn-stripped post-interaction-button">
+                     {numberFormatter.format(post._count.comments)} comments
+                  </Link>
                </p>
                {post.author.id === user?.id && (
                   <button className="btn-stripped post-actions-button" onClick={handleEditClick}>

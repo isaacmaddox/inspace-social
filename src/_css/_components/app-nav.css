@@ -1,7 +1,7 @@
 .app-nav {
    grid-area: nav;
    padding-block: 3rem 1rem;
-   padding-inline: 2rem;
+   padding-inline: 1.5rem;
    width: min(30ch, 100%);
    /* border-right: 1px solid var(--surface-300); */
    justify-self: end;
@@ -31,6 +31,7 @@
       gap: 0.5rem;
       height: 100%;
       overflow: auto;
+      padding-inline: 0.5rem;
 
       a {
          display: flex;

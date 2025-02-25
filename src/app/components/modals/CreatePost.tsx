@@ -1,10 +1,11 @@
 "use client";
 
 import { createPost } from "@/_actions/post";
-import { useModals } from "@/app/ModalProvider";
+import { useModals } from "@/app/components/ModalProvider";
 import { useActionState, useEffect, useRef, useState } from "react";
 import FormField from "../FormField";
 import "@/_css/_components/create-post-modal.css";
+import { useUser } from "@/app/components/AuthProvider";
 
 export default function CreatePostModal() {
    const { registerModal } = useModals();
@@ -13,6 +14,7 @@ export default function CreatePostModal() {
    const dialogRef = useRef<HTMLDialogElement>(null);
    const submitRef = useRef<HTMLButtonElement>(null);
    const typeRef = useRef<HTMLInputElement>(null);
+   const { user } = useUser();
 
    function openModal(isOpen: boolean) {
       if (isOpen) dialogRef.current?.showModal();
@@ -40,10 +42,11 @@ export default function CreatePostModal() {
       if (formState?.success) {
          openModal(false);
       }
-   }, [formState]);
+   }, [formState, user]);
 
-   function saveDraft() {
+   function saveDraft(e: React.MouseEvent<HTMLButtonElement>) {
       if (typeRef.current) typeRef.current.value = "draft";
+      else e.preventDefault();
    }
 
    return (

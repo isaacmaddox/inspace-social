@@ -71,6 +71,9 @@
       color: var(--text-color-muted);
       animation: unbounce 500ms cubic-bezier(0.19, 1, 0.22, 1);
       transition: color var(--transition-duration-short) ease;
+      text-decoration: none;
+      font-weight: var(--fw-p);
+      outline: none;
 
       &:not(:disabled) {
          cursor: pointer;

@@ -24,7 +24,7 @@ export const getNewestPosts = async ({ page, limit }: GetPostsParams) => {
 export const getUserPosts = async ({ uid, page, limit }: GetPostsParams & { uid: number }) => {
    const user = await getSession();
 
-   return await postDao.getUserPosts({ uid, userId: user?.id, limit, page });
+   return await postDao.getUserPostFeed({ uid, userId: user?.id, limit, page });
 };
 
 export const getUserDrafts = async ({ page, limit }: GetPostsParams) => {
@@ -61,7 +61,8 @@ export const unlikePost = async ({ postId }: { postId: number }) => {
 };
 
 export const getPostById = async (postId: number) => {
-   return postDao.getPostById(postId);
+   const user = await getSession();
+   return postDao.getPostById(postId, user?.id);
 };
 
 export async function createPost(_: unknown, createPostData: FormData) {

@@ -35,7 +35,7 @@ export default async function DraftsPage({ params }: { params: Promise<{ handle:
             </Link>
             <p className="text-base text-color-heading text-bold">Drafts</p>
          </nav>
-         <PostFeed feedKey="drafts" loadPostsFn={getUserDrafts} simpleEnd endMessage="No more drafts to show" />
+         <PostFeed feedKey="drafts" loadPostsFn={getUserDrafts} simpleEnd noClick endMessage="No more drafts to show" />
       </main>
    );
 }

@@ -4,10 +4,11 @@ import { getComments } from "@/_actions/post";
 import PostFeed from "@/app/components/posts/PostFeed";
 import { GetPostsParams } from "@/daos/post.dao";
 import CreateCommentForm from "./CreateCommentForm";
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function PostCommentFeed({ postId, handle }: { postId: number; handle: string }) {
-   const [reset, setReset] = useState(false);
+   const queryClient = useQueryClient();
+   const feedKey = `user-${handle}-post-${postId}`;
 
    function getCommentsFn(postId: number) {
       return ({ page, limit }: GetPostsParams) => {
@@ -16,13 +17,16 @@ export default function PostCommentFeed({ postId, handle }: { postId: number; ha
    }
 
    function reloadComments() {
-      setReset(true);
+      queryClient.invalidateQueries({ queryKey: [feedKey] });
    }
 
    return (
       <>
+         <div className="feed-heading-container">
+            <h2 className="text-lg text-bold text-color-heading">Comments</h2>
+         </div>
          <CreateCommentForm parentId={Number(postId)} onCommentPosted={reloadComments} />
-         <PostFeed feedKey={`user-${handle}-post-${postId}`} simpleEnd loadPostsFn={getCommentsFn(Number(postId))} isComments reset={reset} />
+         <PostFeed feedKey={feedKey} simpleEnd loadPostsFn={getCommentsFn(Number(postId))} />
       </>
    );
 }

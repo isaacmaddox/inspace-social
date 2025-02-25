@@ -1,9 +1,19 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Post, Prisma, PrismaClient } from "@prisma/client";
 
 export type GetPostsParams = {
    userId?: number;
    limit: number;
    page: number;
+};
+
+type DeepPost = Post & {
+   _count: { likes: number; comments: number };
+   likes: { userId: number }[];
+   author: {
+      id: number;
+      displayName: string;
+      handle: string;
+   };
 };
 
 export class PostDAO {
@@ -41,8 +51,18 @@ export class PostDAO {
 
    constructor(private prisma: PrismaClient) {}
 
+   private sortByPopularity(posts: DeepPost[]): DeepPost[] {
+      return posts.sort((a, b) => {
+         const aComments = a._count.comments;
+         const bComments = b._count.comments;
+         const aLikes = a._count.likes;
+         const bLikes = b._count.likes;
+         return bComments + bLikes - (aComments + aLikes);
+      });
+   }
+
    async getFollowingPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
-      return this.prisma.post.findMany({
+      const posts = await this.prisma.post.findMany({
          where: {
             parent: null,
             draft: false,
@@ -59,10 +79,12 @@ export class PostDAO {
          take: limit,
          skip: (page - 1) * limit,
       });
+
+      return this.sortByPopularity(posts);
    }
 
    async getTrendingPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
-      return this.prisma.post.findMany({
+      const posts = await this.prisma.post.findMany({
          where: {
             parent: null,
             draft: false,
@@ -72,6 +94,8 @@ export class PostDAO {
          take: limit,
          skip: (page - 1) * limit,
       });
+
+      return this.sortByPopularity(posts);
    }
 
    async getNewestPosts({ userId, limit = 10, page = 1 }: GetPostsParams) {
@@ -89,11 +113,12 @@ export class PostDAO {
       });
    }
 
-   async getUserPosts({ uid, userId, limit = 10, page = 1 }: GetPostsParams & { uid: number }) {
+   async getUserPostFeed({ uid, userId, limit = 10, page = 1 }: GetPostsParams & { uid: number }) {
       return this.prisma.post.findMany({
          where: {
             authorId: uid,
             draft: false,
+            parent: null,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -120,7 +145,7 @@ export class PostDAO {
    }
 
    async getUserPopularPosts({ uid, userId, limit = 10, page = 1 }: GetPostsParams & { uid: number }) {
-      return this.prisma.post.findMany({
+      const posts = await this.prisma.post.findMany({
          where: {
             authorId: uid,
             parent: null,
@@ -131,6 +156,8 @@ export class PostDAO {
          take: limit,
          skip: (page - 1) * limit,
       });
+
+      return this.sortByPopularity(posts);
    }
 
    async getUserMentions({ handle, userId, limit = 10, page = 1 }: GetPostsParams & { handle: string }) {
@@ -150,17 +177,17 @@ export class PostDAO {
       });
    }
 
-   async getPostById(postId: number) {
+   async getPostById(postId: number, userId?: number) {
       return this.prisma.post.findUnique({
          where: {
             id: postId,
          },
-         include: this.postInclude(),
+         include: this.postInclude(userId),
       });
    }
 
    async getComments({ postId, userId, limit = 10, page = 1 }: GetPostsParams & { postId: number }) {
-      return this.prisma.post.findMany({
+      const posts = await this.prisma.post.findMany({
          where: {
             parentId: postId,
             draft: false,
@@ -170,6 +197,8 @@ export class PostDAO {
          take: limit,
          skip: (page - 1) * limit,
       });
+
+      return this.sortByPopularity(posts);
    }
    async createPost(post: CreatePostData) {
       return this.prisma.post.create({
@@ -178,19 +207,28 @@ export class PostDAO {
    }
 
    async likePost({ postId, userId }: { postId: number; userId: number }) {
-      return this.prisma.post.update({
-         where: {
-            id: postId,
-         },
-         data: {
-            likes: {
-               create: {
-                  userId,
+      try {
+         return this.prisma.post.update({
+            where: {
+               id: postId,
+            },
+            data: {
+               likes: {
+                  create: {
+                     userId,
+                  },
                },
             },
-         },
-         include: this.postInclude(userId),
-      });
+            include: this.postInclude(userId),
+         });
+      } catch {
+         return this.prisma.post.findUnique({
+            where: {
+               id: postId,
+            },
+            include: this.postInclude(userId),
+         });
+      }
    }
 
    async unlikePost({ postId, userId }: { postId: number; userId: number }) {

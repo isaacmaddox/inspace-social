@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
          const number = Math.floor(Math.random() * 19) + 1;
          const result = await fetch(`https://random-word-api.herokuapp.com/word?number=${number}`);
          const words = await result.json();
-         const post = await prisma.post.create({
+         await prisma.post.create({
             data: {
                content: words.join(" "),
                authorId: 1,

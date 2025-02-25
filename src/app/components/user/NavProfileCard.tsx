@@ -1,7 +1,7 @@
 "use client";
 
 import "@/_css/_components/profile-card.css";
-import { useUser } from "@/app/AuthProvider";
+import { useUser } from "@/app/components/AuthProvider";
 import { logout } from "@/_actions/auth";
 import { useRouter } from "next/navigation";
 

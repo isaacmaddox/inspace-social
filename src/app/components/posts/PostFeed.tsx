@@ -1,121 +1,78 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/_css/_components/post-feed.css";
 import { FeedPost } from "@/daos/post.dao";
 import Post from "./Post";
+import { InfiniteData, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
-const POST_LIMIT = 5;
+const POST_LIMIT = 2;
 
-interface LocalStoragePost {
-   posts: FeedPost[];
-   page: number;
-   hasMore: boolean;
-}
-
-function getLocalStorageData(key: string): LocalStoragePost | undefined {
-   const data = localStorage.getItem(key);
-   return data ? JSON.parse(data) : undefined;
-}
-
-function setLocalStorageData(key: string, data: LocalStoragePost) {
-   localStorage.setItem(key, JSON.stringify(data));
-}
-
-export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isComments = false, endMessage, reset }: PostFeedProps) {
-   const [posts, setPosts] = useState<FeedPost[]>([]);
-   const [page, setPage] = useState(1);
-   const [loading, setLoading] = useState(false);
-   const [hasMore, setHasMore] = useState(true);
-   const [error, setError] = useState(false);
+export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, endMessage, noClick = false }: PostFeedProps) {
    const { ref, inView } = useInView();
+   const {
+      data: posts,
+      isLoading,
+      isError,
+      fetchNextPage,
+      hasNextPage,
+   } = useInfiniteQuery({
+      queryKey: [feedKey],
+      queryFn: async ({ pageParam }) => loadPostsFn({ page: pageParam, limit: POST_LIMIT }),
+      getNextPageParam: (lastPage, pages) => (lastPage.length > 0 ? pages.length + 1 : undefined),
+      initialPageParam: 1,
+   });
+   const queryClient = useQueryClient();
 
-   const resetFeed = useCallback(() => {
-      localStorage.clear();
-      updateState({
-         posts: [],
-         page: 1,
-         hasMore: true,
+   function resetFeed() {
+      resetInfiniteData();
+      queryClient.invalidateQueries({ queryKey: [feedKey] });
+   }
+
+   function resetInfiniteData() {
+      queryClient.setQueryData([feedKey], (oldData: InfiniteData<FeedPost[]>) => {
+         if (!oldData) return undefined;
+
+         return {
+            ...oldData,
+            pages: oldData.pages.slice(0, 1),
+            pageParams: oldData.pageParams.slice(0, 1),
+         };
       });
-   }, []);
-
-   useEffect(() => {
-      resetFeed();
-   }, [reset, resetFeed]);
-
-   function tryAgain() {
-      setError(false);
-   }
-
-   function updateState({ posts, page, hasMore }: { posts: FeedPost[]; page: number; hasMore: boolean }) {
-      setPosts(posts);
-      setPage(page);
-      setHasMore(hasMore);
    }
 
    useEffect(() => {
-      const localStorageData = getLocalStorageData(feedKey);
-      const shouldLoadLocalStorage = posts.length === 0 && localStorageData && localStorageData.posts.length > 0;
-      const shouldLoadMore = inView && hasMore;
-
-      async function loadPosts() {
-         if (!isComments) localStorage.clear();
-         if (error) return;
-         setError(false);
-         setLoading(true);
-         try {
-            const newPosts = await loadPostsFn({ page, limit: POST_LIMIT });
-            updateState({
-               posts: [...posts, ...newPosts],
-               page: page + 1,
-               hasMore: newPosts.length > POST_LIMIT - 1,
-            });
-            setLoading(false);
-            setLocalStorageData(feedKey, { posts: [...posts, ...newPosts], page: page + 1, hasMore: newPosts.length > POST_LIMIT - 1 });
-         } catch {
-            setError(true);
-            setLoading(false);
-         }
+      if (inView && hasNextPage) {
+         fetchNextPage();
       }
-
-      if (shouldLoadLocalStorage) {
-         updateState({
-            ...localStorageData,
-            posts: localStorageData.posts.map((post) => ({ ...post, createdAt: new Date(post.createdAt), updatedAt: new Date(post.updatedAt) })),
-         });
-      } else if (shouldLoadMore) {
-         loadPosts();
-      }
-   }, [inView, hasMore, loading, loadPostsFn, feedKey, page, posts, isComments, error]);
+   }, [inView, posts, hasNextPage, fetchNextPage]);
 
    return (
       <div className="post-feed">
-         {posts.map((post) => (
-            <Post key={post.id} post={post} />
-         ))}
+         {posts?.pages.map((page) => page.map((post) => <Post key={post.id} post={post} noClick={noClick} />))}
          <div style={{ position: "absolute", bottom: 0, height: "1px" }} ref={ref} />
-         {loading && <div className="feed-loading-container">{loading && <p className="text-sm text-muted">Loading...</p>}</div>}
-         {!hasMore && !simpleEnd && (
+         {isLoading && <div className="feed-loading-container">{isLoading && <p className="text-sm text-muted">Loading...</p>}</div>}
+         {!hasNextPage && !simpleEnd && (
             <div className="feed-message-container">
                <span>
                   <p className="text-bold text-color-heading">No more posts</p>
                   <p className="text-sm text-muted no-margin">Refresh your feed to see anything new</p>
                </span>
-               <button onClick={resetFeed} className="btn btn-sm btn-secondary">
+               <button className="btn btn-sm btn-secondary" onClick={resetFeed}>
                   Refresh
                </button>
             </div>
          )}
-         {!hasMore && simpleEnd && (
+         {!hasNextPage && simpleEnd && (
             <div className="feed-loading-container">
                <p className="text-sm text-muted">{endMessage || "No more posts"}</p>
             </div>
          )}
-         {error && (
+         {isError && (
             <div className="feed-loading-container">
                <p className="text-sm text-muted">There was a problem getting new posts.</p>
-               <button className="btn-sm" onClick={tryAgain}>
+               <button className="btn-sm" onClick={resetFeed}>
                   Try again
                </button>
             </div>
@@ -128,7 +85,6 @@ interface PostFeedProps {
    loadPostsFn: ({ page, limit }: { page: number; limit: number }) => Promise<FeedPost[]>;
    simpleEnd?: boolean;
    feedKey: string;
-   isComments?: boolean;
    endMessage?: string;
-   reset?: boolean;
+   noClick?: boolean;
 }

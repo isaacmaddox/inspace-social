@@ -1,5 +1,6 @@
 .feed-heading-container {
-   padding: 1.5rem 2rem 1rem 2rem;
+   padding: 1rem 2rem 0 2rem;
+   /* border-block-end: 1px solid var(--surface-300); */
 
    h2 {
       margin: 0;
@@ -11,8 +12,7 @@
    flex-direction: column;
    gap: 0em;
    border-block-end: 1px solid var(--surface-300);
-   padding-block-end: 1rem;
-   padding-inline: 2rem;
+   padding: 1rem 2rem;
 
    textarea {
       resize: none;
