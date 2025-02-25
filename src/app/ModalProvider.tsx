@@ -29,14 +29,7 @@ export default function ModalProvider({ children }: { children: React.ReactNode 
       return modals.find((m) => m.id === id);
    }
 
-   return (
-      <ModalContext.Provider value={{ registerModal, getModal }}>
-         {modals.map((modal) => (
-            <modal.jsx key={modal.id} />
-         ))}
-         {children}
-      </ModalContext.Provider>
-   );
+   return <ModalContext.Provider value={{ registerModal, getModal }}>{children}</ModalContext.Provider>;
 }
 
 export function useModal(id: string) {
@@ -62,7 +55,6 @@ type ModalContext = {
 
 interface CreateModalProps {
    id: string;
-   jsx: React.ComponentType;
    setOpen: (open: boolean) => void;
 }
 

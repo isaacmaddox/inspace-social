@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
          const post = await prisma.post.create({
             data: {
                content: words.join(" "),
-               authorId: 2,
+               authorId: 1,
             },
          });
          console.log(`Created post ${i + 1} of ${count}`);

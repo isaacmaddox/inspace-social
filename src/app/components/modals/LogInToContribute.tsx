@@ -16,7 +16,6 @@ export default function LoginToContribute() {
    useEffect(() => {
       registerModal({
          id: "logintocontribute",
-         jsx: LoginToContribute,
          setOpen: openModal,
       });
    }, [registerModal]);

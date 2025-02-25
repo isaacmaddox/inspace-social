@@ -21,7 +21,6 @@ export default function CreatePostModal() {
    useEffect(() => {
       registerModal({
          id: "createpost",
-         jsx: CreatePostModal,
          setOpen: openModal,
       });
 
