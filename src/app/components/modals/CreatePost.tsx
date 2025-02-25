@@ -2,13 +2,14 @@
 
 import { createPost } from "@/_actions/post";
 import { useModals } from "@/app/ModalProvider";
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import FormField from "../FormField";
 import "@/_css/_components/create-post-modal.css";
 
 export default function CreatePostModal() {
    const { registerModal } = useModals();
    const [formState, formAction] = useActionState(createPost, null);
+   const [wordCount, setWordCount] = useState(0);
    const dialogRef = useRef<HTMLDialogElement>(null);
    const submitRef = useRef<HTMLButtonElement>(null);
    const typeRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,8 @@ export default function CreatePostModal() {
          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <form action={formAction}>
                <input type="hidden" name="type" value="post" ref={typeRef} />
-               <FormField type="textarea" name="content" placeholder="What's on your mind?" />
+               <FormField type="textarea" onChange={(e) => setWordCount(e.target.value.length)} name="content" placeholder="What's on your mind?" />
+               <p className="text-sm text-muted word-count">{wordCount} / 250</p>
                <footer className="modal-actions">
                   <button type="submit" className="btn btn-secondary" ref={submitRef}>
                      Post

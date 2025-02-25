@@ -4,7 +4,7 @@ interface FormFieldProps {
    type: string;
    placeholder?: string | undefined;
    defaultValue?: string | undefined;
-   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
    error?: string[] | undefined;
    autoFocus?: boolean;
 }
@@ -14,7 +14,7 @@ export default function FormField({ label, name, type = "text", placeholder, def
       <div className="form-field">
          <label htmlFor={name}>{label}</label>
          {type === "textarea" ? (
-            <textarea id={name} name={name} placeholder={placeholder} defaultValue={defaultValue} autoFocus={autoFocus} />
+            <textarea id={name} name={name} placeholder={placeholder} defaultValue={defaultValue} autoFocus={autoFocus} onChange={onChange} />
          ) : (
             <input
                type={type}

@@ -2,6 +2,12 @@
    --_width: min(55ch, 100% - 2rem);
    --_padding: 2em;
 
+   .modal-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+   }
+
    form textarea {
       width: 100%;
       border: none;
@@ -10,5 +16,11 @@
       color: var(--text-color-body);
       font-size: var(--fs-p);
       outline: none;
+      padding: 0;
+      field-sizing: content;
+   }
+
+   .word-count {
+      text-align: right;
    }
 }
