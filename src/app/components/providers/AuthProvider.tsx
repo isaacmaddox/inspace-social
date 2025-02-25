@@ -3,8 +3,9 @@
 import { getSession } from "@/_actions/auth";
 import { getUserById } from "@/_actions/user";
 import { User } from "@prisma/client";
-import { createContext, useContext, useEffect, useState } from "react";
-const UserContext = createContext<UserContextType>(null);
+import { createContext, useEffect, useState } from "react";
+
+export const UserContext = createContext<UserContextType>(null);
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
    const [user, setUser] = useState<Omit<User, "password" | "salt"> | null>(null);
@@ -26,16 +27,6 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
    }, []);
 
    return <UserContext.Provider value={{ user, isLoggedIn: !!user, isLoading }}>{children}</UserContext.Provider>;
-}
-
-export function useUser() {
-   const user = useContext(UserContext);
-
-   if (!user) {
-      throw new Error("User not found");
-   }
-
-   return user;
 }
 
 type UserContextType = {

@@ -5,6 +5,7 @@
    padding: 1.5em 2rem;
    border-bottom: 1px solid var(--surface-300);
    transition: background-color var(--transition-duration-short) ease;
+   position: relative;
 
    &:not(.no-click) {
       cursor: pointer;
@@ -51,6 +52,8 @@
          height: unset;
          color: var(--text-color-muted);
          cursor: pointer;
+         anchor-name: --post-actions-button;
+         outline: none;
 
          &:hover {
             color: var(--text-color-body);

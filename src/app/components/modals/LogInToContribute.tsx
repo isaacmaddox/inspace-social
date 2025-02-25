@@ -1,6 +1,6 @@
 "use client";
 
-import { useModals } from "@/app/components/ModalProvider";
+import { useModals } from "@/app/hooks/useModals";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { createPost } from "@/_actions/post";
-import { useModals } from "@/app/components/ModalProvider";
+import { useModals } from "@/app/hooks/useModals";
 import { useActionState, useEffect, useRef, useState } from "react";
 import FormField from "../FormField";
 import "@/_css/_components/create-post-modal.css";
-import { useUser } from "@/app/components/AuthProvider";
+import { useUser } from "@/app/hooks/useUser";
 
 export default function CreatePostModal() {
    const { registerModal } = useModals();
@@ -63,10 +63,10 @@ export default function CreatePostModal() {
                />
                <p className="text-sm text-muted word-count">{wordCount} / 250</p>
                <footer className="modal-actions">
-                  <button type="submit" className="btn btn-secondary" ref={submitRef}>
+                  <button type="submit" className="btn btn-secondary" ref={submitRef} disabled={wordCount === 0}>
                      Post
                   </button>
-                  <button type="submit" className="btn" onClick={saveDraft}>
+                  <button type="submit" className="btn" onClick={saveDraft} disabled={wordCount === 0}>
                      Save Draft
                   </button>
                </footer>

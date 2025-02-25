@@ -1,9 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import "@/_css/_components/modals.css";
 
-const ModalContext = createContext<ModalContext>(null);
+export const ModalContext = createContext<ModalContext>(null);
 
 export default function ModalProvider({ children }: { children: React.ReactNode }) {
    const [modals, setModals] = useState<Modal[]>([]);
@@ -30,22 +30,6 @@ export default function ModalProvider({ children }: { children: React.ReactNode 
    }
 
    return <ModalContext.Provider value={{ registerModal, getModal }}>{children}</ModalContext.Provider>;
-}
-
-export function useModal(id: string) {
-   const modalCtx = useContext(ModalContext);
-
-   if (!modalCtx) throw new Error("useModal must be used in a child component of the ModalProvider component");
-
-   return modalCtx.getModal(id);
-}
-
-export function useModals() {
-   const modalCtx = useContext(ModalContext);
-
-   if (!modalCtx) throw new Error("useModals must be used in a child component of the ModalProvider component");
-
-   return modalCtx;
 }
 
 type ModalContext = {

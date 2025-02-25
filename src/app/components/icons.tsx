@@ -256,17 +256,23 @@ export function Back({ ...props }: SVGProps<SVGSVGElement>) {
 export function Drafts({ ...props }: SVGProps<SVGSVGElement>) {
    return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-         <path d="M13.7474 20.4429H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M12.78 3.79479C13.5557 2.86779 14.95 2.73186 15.8962 3.49173C15.9485 3.53296 17.6295 4.83879 17.6295 4.83879C18.669 5.46719 18.992 6.80311 18.3494 7.82259C18.3153 7.87718 8.81195 19.7645 8.81195 19.7645C8.49578 20.1589 8.01583 20.3918 7.50291 20.3973L3.86353 20.443L3.04353 16.9723C2.92866 16.4843 3.04353 15.9718 3.3597 15.5773L12.78 3.79479Z"
+            d="M11.4922 2.789H7.75324C4.67824 2.789 2.75024 4.966 2.75024 8.048V16.362C2.75024 19.444 4.66924 21.621 7.75324 21.621H16.5772C19.6622 21.621 21.5812 19.444 21.5812 16.362V12.334"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
          />
-         <path d="M11.0209 6.00089L16.4731 10.188" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            fillRule="evenodd"
+            clip-rule="evenodd"
+            d="M8.82775 10.9209L16.3008 3.4479C17.2318 2.5179 18.7408 2.5179 19.6718 3.4479L20.8888 4.6649C21.8198 5.5959 21.8198 7.1059 20.8888 8.0359L13.3798 15.5449C12.9728 15.9519 12.4208 16.1809 11.8448 16.1809H8.09875L8.19275 12.4009C8.20675 11.8449 8.43375 11.3149 8.82775 10.9209Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path d="M15.1652 4.60251L19.7312 9.16851" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
    );
 }
@@ -289,6 +295,28 @@ export function Edit({ ...props }: SVGProps<SVGSVGElement>) {
             fillRule="evenodd"
             clipRule="evenodd"
             d="M20 16.5537C20 15.2581 18.9426 14.2075 17.6376 14.2075C16.3318 14.2075 15.2737 15.2581 15.2737 16.5537C15.2737 17.8494 16.3318 18.9 17.6376 18.9C18.9426 18.9 20 17.8494 20 16.5537Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+      </svg>
+   );
+}
+
+export function Trash({ ...props }: SVGProps<SVGSVGElement>) {
+   return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+         <path
+            d="M19.3249 9.4682C19.3249 9.4682 18.7819 16.2032 18.4669 19.0402C18.3169 20.3952 17.4799 21.1892 16.1089 21.2142C13.4999 21.2612 10.8879 21.2642 8.27991 21.2092C6.96091 21.1822 6.13791 20.3782 5.99091 19.0472C5.67391 16.1852 5.13391 9.4682 5.13391 9.4682"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path d="M20.7082 6.23972H3.75024" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            d="M17.4407 6.2397C16.6557 6.2397 15.9797 5.6847 15.8257 4.9157L15.5827 3.6997C15.4327 3.1387 14.9247 2.7507 14.3457 2.7507H10.1127C9.5337 2.7507 9.0257 3.1387 8.8757 3.6997L8.6327 4.9157C8.4787 5.6847 7.8027 6.2397 7.0177 6.2397"
             stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"

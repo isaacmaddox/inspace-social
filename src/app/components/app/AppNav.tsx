@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { Logo, Home, Settings, Bell, Group, Following, Drafts } from "../icons";
-import { useUser } from "../AuthProvider";
+import { useUser } from "@/app/hooks/useUser";
 import { usePathname } from "next/navigation";
 import "@/_css/_components/app-nav.css";
 import NavProfileCard from "../user/NavProfileCard";
-import { useModal } from "@/app/components/ModalProvider";
+import { useModal } from "@/app/hooks/useModals";
 
 export default function AppNav() {
    const { user, isLoggedIn, isLoading } = useUser();
