@@ -5,18 +5,25 @@ import { Back } from "@/app/components/icons";
 import PostFeed from "@/app/components/posts/PostFeed";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
-export default async function DraftsPage({ params }: { params: { handle: string } }) {
+export const metadata: Metadata = {
+   title: "Your Drafts | InSpace",
+   description: "View your post drafts on InSpace",
+};
+
+export default async function DraftsPage({ params }: { params: Promise<{ handle: string }> }) {
    const session = await getSession();
+   const { handle } = await params;
 
    if (!session) {
-      redirect(`/user/${params.handle}`);
+      redirect(`/user/${handle}`);
    }
 
    const user = await getUserById(session?.id);
 
-   if (!user || user.handle !== params.handle) {
-      return redirect(`/user/${params.handle}`);
+   if (!user || user.handle !== handle) {
+      return redirect(`/user/${handle}`);
    }
 
    return (
