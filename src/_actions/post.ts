@@ -66,14 +66,14 @@ export const getPostById = async (postId: number) => {
 
 export async function createPost(_: unknown, createPostData: FormData) {
    const user = await getSession();
-   if (!user) return { success: false };
+   if (!user) return { success: false, errors: null };
 
    const data = Object.fromEntries(createPostData.entries()) as unknown as CreatePostSchema;
 
    const validatedFields = createPostSchema.safeParse(data);
 
    if (!validatedFields.success) {
-      return { success: false, fieldValues: data };
+      return { success: false, errors: validatedFields.error.flatten().fieldErrors, fieldValues: data };
    }
 
    const { content, parentId } = validatedFields.data;
@@ -87,7 +87,7 @@ export async function createPost(_: unknown, createPostData: FormData) {
       draft: data.type === "draft",
    });
 
-   if (!post) return { success: false };
+   if (!post) return { success: false, errors: { content: ["Failed to create post"] } };
 
-   return { success: true };
+   return { success: true, errors: null };
 }

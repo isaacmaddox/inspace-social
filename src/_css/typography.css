@@ -83,6 +83,7 @@ h4,
 .text-h4 {
    &:not(.no-margin) {
       margin-block-start: 0;
+
       &:has(+ &) {
          margin-block-end: var(--heading-heading-space);
       }

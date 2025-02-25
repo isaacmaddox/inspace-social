@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/_css/_components/post-feed.css";
 import { FeedPost } from "@/daos/post.dao";
@@ -23,7 +23,7 @@ function setLocalStorageData(key: string, data: LocalStoragePost) {
    localStorage.setItem(key, JSON.stringify(data));
 }
 
-export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isComments = false, endMessage }: PostFeedProps) {
+export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isComments = false, endMessage, reset }: PostFeedProps) {
    const [posts, setPosts] = useState<FeedPost[]>([]);
    const [page, setPage] = useState(1);
    const [loading, setLoading] = useState(false);
@@ -31,14 +31,18 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, isCo
    const [error, setError] = useState(false);
    const { ref, inView } = useInView();
 
-   function resetFeed() {
+   const resetFeed = useCallback(() => {
       localStorage.clear();
       updateState({
          posts: [],
          page: 1,
          hasMore: true,
       });
-   }
+   }, []);
+
+   useEffect(() => {
+      resetFeed();
+   }, [reset, resetFeed]);
 
    function tryAgain() {
       setError(false);
@@ -126,4 +130,5 @@ interface PostFeedProps {
    feedKey: string;
    isComments?: boolean;
    endMessage?: string;
+   reset?: boolean;
 }

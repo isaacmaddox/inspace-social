@@ -18,8 +18,8 @@ export const loginSchema = z.object({
 
 export const createPostSchema = z.object({
    content: z.string().trim().min(1, "Content is required"),
-   parentId: z.number().optional(),
-   type: z.enum(["post", "draft"]),
+   parentId: z.string().transform((val) => (val === "" ? undefined : Number(val))).optional(),
+   type: z.enum(["post", "draft"]).optional(),
 });
 
 export type SignupSchema = z.infer<typeof signupSchema>;

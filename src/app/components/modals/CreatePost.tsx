@@ -51,7 +51,13 @@ export default function CreatePostModal() {
          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <form action={formAction}>
                <input type="hidden" name="type" value="post" ref={typeRef} />
-               <FormField type="textarea" onChange={(e) => setWordCount(e.target.value.length)} name="content" placeholder="What's on your mind?" />
+               <FormField
+                  type="textarea"
+                  onChange={(e) => setWordCount(e.target.value.length)}
+                  maxLength={250}
+                  name="content"
+                  placeholder="What's on your mind?"
+               />
                <p className="text-sm text-muted word-count">{wordCount} / 250</p>
                <footer className="modal-actions">
                   <button type="submit" className="btn btn-secondary" ref={submitRef}>

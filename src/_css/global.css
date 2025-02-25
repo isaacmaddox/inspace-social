@@ -1,6 +1,7 @@
 @import "./colors.css";
 @import "./sizes.css";
 @import "./typography.css";
+@import "./forms.css";
 @import "./_components/button.css";
 
 :root {
@@ -40,4 +41,18 @@ ol[role="list"] {
    width: 1px;
    padding: 0;
    border: 0;
+}
+
+::-webkit-scrollbar {
+   width: 0.5em;
+   background-color: var(--surface-50);
+}
+
+::-webkit-scrollbar-thumb {
+   background-color: var(--surface-400);
+   border-radius: 1em;
+
+   &:hover {
+      background-color: var(--surface-500);
+   }
 }
