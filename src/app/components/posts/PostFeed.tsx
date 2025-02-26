@@ -22,6 +22,7 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, endM
       queryFn: async ({ pageParam }) => loadPostsFn({ page: pageParam, limit: POST_LIMIT }),
       getNextPageParam: (lastPage, pages) => (lastPage.length > 0 ? pages.length + 1 : undefined),
       initialPageParam: 1,
+      refetchOnMount: false,
    });
    const queryClient = useQueryClient();
 
@@ -64,7 +65,7 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, endM
                </button>
             </div>
          )}
-         {!hasNextPage && simpleEnd && (
+         {!hasNextPage && simpleEnd && !isLoading && (
             <div className="feed-loading-container">
                <p className="text-sm text-muted">{endMessage || "No more posts"}</p>
             </div>

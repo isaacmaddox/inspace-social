@@ -24,13 +24,11 @@ export const generateMetadata = async ({ params }: { params: Promise<{ handle: s
 export default async function PostPage({ params }: { params: Promise<{ handle: string; postId: string }> }) {
    const { handle, postId } = await params;
 
-   const user = await getUserByHandle(handle);
+   const [user, post] = await Promise.all([getUserByHandle(handle), getPost(Number(postId))]);
 
    if (!user) {
       return notFound();
    }
-
-   const post = await getPost(Number(postId));
 
    if (!post) {
       return notFound();

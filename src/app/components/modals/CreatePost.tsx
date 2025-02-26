@@ -9,7 +9,7 @@ import { useUser } from "@/app/hooks/useUser";
 
 export default function CreatePostModal() {
    const { registerModal } = useModals();
-   const [formState, formAction] = useActionState(createPost, null);
+   const [formState, formAction, pending] = useActionState(createPost, null);
    const [wordCount, setWordCount] = useState(0);
    const dialogRef = useRef<HTMLDialogElement>(null);
    const submitRef = useRef<HTMLButtonElement>(null);
@@ -66,7 +66,7 @@ export default function CreatePostModal() {
                   <button type="submit" className="btn btn-secondary" ref={submitRef} disabled={wordCount === 0}>
                      Post
                   </button>
-                  <button type="submit" className="btn" onClick={saveDraft} disabled={wordCount === 0}>
+                  <button type="submit" className="btn" onClick={saveDraft} disabled={pending || wordCount === 0}>
                      Save Draft
                   </button>
                </footer>

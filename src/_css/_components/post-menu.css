@@ -11,6 +11,7 @@
    transition-property: opacity, transform, filter;
    transition-duration: var(--transition-duration-short);
    transition-timing-function: ease;
+   z-index: 2;
 
    @starting-style {
       opacity: 0;
