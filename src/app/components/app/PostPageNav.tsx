@@ -7,7 +7,7 @@ export default function PostPageNav() {
    const router = useRouter();
 
    return (
-      <nav className="post-nav">
+      <nav className="subpage-nav">
          <button className="btn btn-sm" onClick={() => router.back()}>
             <Back />
             Back

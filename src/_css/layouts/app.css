@@ -25,8 +25,9 @@
          animation: fadeIn 1ms linear forwards;
          animation-timeline: scroll();
          animation-range: 0 25dvh;
+         z-index: 2;
 
-         &.post-nav {
+         &.subpage-nav {
             display: grid;
             align-items: center;
             grid-template-columns: 1fr max-content 1fr;

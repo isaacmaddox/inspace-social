@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/_css/_components/post-feed.css";
 import { FeedPost } from "@/daos/post.dao";
@@ -25,6 +25,20 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, endM
       refetchOnMount: false,
    });
    const queryClient = useQueryClient();
+
+   const handleDeletePost = useCallback(
+      (postId: number) => {
+         queryClient.setQueryData([feedKey], (oldData: InfiniteData<FeedPost[]>) => {
+            if (!oldData) return undefined;
+
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page) => page.map((post) => (post.id === postId ? { ...post, deleted: true } : post))),
+            };
+         });
+      },
+      [queryClient, feedKey]
+   );
 
    function resetFeed() {
       resetInfiniteData();
@@ -51,7 +65,9 @@ export default function PostFeed({ loadPostsFn, simpleEnd = false, feedKey, endM
 
    return (
       <div className="post-feed">
-         {posts?.pages.map((page) => page.map((post) => <Post key={post.id} post={post} noClick={noClick} />))}
+         {posts?.pages.map((page) =>
+            page.map((post) => <Post onPostDeleted={() => handleDeletePost(post.id)} key={post.id} post={post} noClick={noClick} />)
+         )}
          <div style={{ position: "absolute", bottom: 0, height: "1px" }} ref={ref} />
          {isLoading && <div className="feed-loading-container">{isLoading && <p className="text-sm text-muted">Loading...</p>}</div>}
          {!hasNextPage && !simpleEnd && (

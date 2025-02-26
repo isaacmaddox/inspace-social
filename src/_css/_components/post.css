@@ -7,6 +7,10 @@
    transition: background-color var(--transition-duration-short) ease;
    position: relative;
 
+   &.deleted {
+      align-items: center;
+   }
+
    &:not(.no-click) {
       cursor: pointer;
 

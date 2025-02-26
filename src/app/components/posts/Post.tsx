@@ -5,7 +5,7 @@ import MarkdownContainer from "../app/MarkdownContainer";
 import "@/_css/_components/post.css";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { likePost, unlikePost } from "@/_actions/post";
+import { deletePost, likePost, unlikePost } from "@/_actions/post";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/hooks/useUser";
 import { useModal } from "@/app/hooks/useModals";
@@ -14,7 +14,15 @@ import PostMenu from "./PostMenu";
 
 const numberFormatter = new Intl.NumberFormat("en-us");
 
-export default function Post({ post: startingPost, noClick = false }: { post: FeedPost; noClick?: boolean }) {
+export default function Post({
+   post: startingPost,
+   noClick = false,
+   onPostDeleted,
+}: {
+   post: FeedPost;
+   noClick?: boolean;
+   onPostDeleted?: () => void;
+}) {
    const [post, setPost] = useState<FeedPost>(startingPost);
    const [liked, setLiked] = useState(post.likes?.length > 0);
    const [menuOpen, setMenuOpen] = useState(false);
@@ -22,6 +30,13 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
    const { user } = useUser();
    const router = useRouter();
    const signupModal = useModal("logintocontribute");
+
+   const handleDelete = useCallback(async () => {
+      const updatedPost = await deletePost({ postId: post.id });
+      if (!updatedPost) return;
+      setPost(updatedPost);
+      onPostDeleted?.();
+   }, [post.id, onPostDeleted]);
 
    const likeButtonClick = async () => {
       if (!user) {
@@ -72,44 +87,51 @@ export default function Post({ post: startingPost, noClick = false }: { post: Fe
       setMenuOpen(true);
    }, []);
 
-   return (
-      post && (
-         <div className={`post ${noClick ? "no-click" : ""}`} onClick={noClick ? undefined : handleClick}>
-            <div className="post-header">
-               <Link href={`/user/${post.author.handle}`} className="post-author">
-                  <p className="text-base text-color-heading no-margin author-name">{post.author.displayName}</p>
-                  <p className="text-sm text-muted author-handle">@{post.author.handle}</p>
-               </Link>
-               <p className="text-sm text-muted">
-                  {post.createdAt.toLocaleTimeString("en-us", {
-                     month: "2-digit",
-                     day: "2-digit",
-                     year: "2-digit",
-                     hour: "2-digit",
-                     minute: "2-digit",
-                  })}
-               </p>
-            </div>
-            <MarkdownContainer>{post.content}</MarkdownContainer>
-            <div className="post-footer">
-               <p className="text-sm text-muted">
-                  <button className={`btn-stripped post-interaction-button ${liked ? "active" : ""}`} onClick={likeButtonClick}>
-                     {numberFormatter.format(post._count.likes)} likes
-                  </button>{" "}
-                  &bull;{" "}
-                  <Link href={`/user/${post.author.handle}/post/${post.id}`} className="btn btn-stripped post-interaction-button">
-                     {numberFormatter.format(post._count.comments)} comments
-                  </Link>
-               </p>
-               {post.author.id === user?.id && (
-                  <button className="btn-stripped post-actions-button" onClick={handleEditClick}>
-                     <Ellipsis />
-                     <span className="sr-only">Edit</span>
-                  </button>
-               )}
-            </div>
-            {menuOpen && <PostMenu />}
+   if (!post) return null;
+
+   if (post.deleted)
+      return (
+         <div className="post deleted no-click">
+            <p className="text-sm">This post has been deleted.</p>
          </div>
-      )
+      );
+
+   return (
+      <div className={`post ${noClick ? "no-click" : ""}`} onClick={noClick ? undefined : handleClick}>
+         <div className="post-header">
+            <Link href={`/user/${post.author.handle}`} className="post-author">
+               <p className="text-base text-color-heading no-margin author-name">{post.author.displayName}</p>
+               <p className="text-sm text-muted author-handle">@{post.author.handle}</p>
+            </Link>
+            <p className="text-sm text-muted">
+               {post.createdAt.toLocaleTimeString("en-us", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+               })}
+            </p>
+         </div>
+         <MarkdownContainer>{post.content}</MarkdownContainer>
+         <div className="post-footer">
+            <p className="text-sm text-muted">
+               <button className={`btn-stripped post-interaction-button ${liked ? "active" : ""}`} onClick={likeButtonClick}>
+                  {numberFormatter.format(post._count.likes)} likes
+               </button>{" "}
+               &bull;{" "}
+               <Link href={`/user/${post.author.handle}/post/${post.id}`} className="btn btn-stripped post-interaction-button">
+                  {numberFormatter.format(post._count.comments)} comments
+               </Link>
+            </p>
+            {post.author.id === user?.id && (
+               <button className="btn-stripped post-actions-button" onClick={handleEditClick}>
+                  <Ellipsis />
+                  <span className="sr-only">Edit</span>
+               </button>
+            )}
+         </div>
+         {menuOpen && <PostMenu deletePostFn={handleDelete} />}
+      </div>
    );
 }

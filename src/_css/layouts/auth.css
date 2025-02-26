@@ -7,6 +7,11 @@
    gap: 4rem;
    flex-wrap: wrap;
    padding: 2rem 1rem;
+   background-image: var(--hex-background-gradient), url(/hex_background_light.png);
+
+   @media (prefers-color-scheme: dark) {
+      background-image: var(--hex-background-gradient), url(/hex_background.png);
+   }
 
    @media (width < 1024px) {
       flex-direction: column;
@@ -17,33 +22,6 @@
       height: fit-content;
       min-height: 100%;
       gap: 2rem;
-   }
-
-   .auth-background {
-      position: fixed;
-      z-index: -2;
-      inset: 0;
-      opacity: 0.375;
-      transition:
-         opacity 1s ease,
-         filter 500ms ease;
-
-      @starting-style {
-         opacity: 0;
-         filter: blur(10px);
-      }
-   }
-
-   &::before {
-      content: "";
-      z-index: -1;
-      position: fixed;
-      inset: 0;
-      background-image: linear-gradient(to right, hsl(var(--hsl-surface-100) / 1) 20%, hsl(var(--hsl-surface-100) / 0));
-
-      @media (width < 1024px) {
-         background-image: linear-gradient(to bottom, hsl(var(--hsl-surface-100) / 1) 20%, hsl(var(--hsl-surface-100) / 0));
-      }
    }
 
    .feature-list-container {

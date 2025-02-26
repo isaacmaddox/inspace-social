@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { sign } from "jsonwebtoken";
 import { userDao } from "@/daos";
 
-export async function login(_: unknown, userData: FormData) {
+export async function login(_: unknown, userData: FormData, uri: string = "/") {
    const data = Object.fromEntries(userData.entries()) as LoginSchema;
 
    const validatedFields = loginSchema.safeParse(data);
@@ -43,5 +43,5 @@ export async function login(_: unknown, userData: FormData) {
       path: "/",
    });
 
-   redirect("/");
+   redirect(uri);
 }

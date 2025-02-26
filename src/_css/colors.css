@@ -112,6 +112,8 @@
    --hsl-red-800: 0 80% 30%;
    --hsl-red-900: 0 80% 25%;
    --hsl-red-950: 0 80% 20%;
+
+   --hex-background-gradient: linear-gradient(to right, hsl(var(--hsl-surface-100) / 0.95) 40%, hsl(var(--hsl-surface-100) / 0));
 }
 
 @media (prefers-color-scheme: dark) {

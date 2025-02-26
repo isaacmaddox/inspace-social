@@ -1,14 +1,14 @@
 import { Edit, Trash } from "../icons";
 import "@/_css/_components/post-menu.css";
 
-export default function PostMenu() {
+export default function PostMenu({ deletePostFn }: { deletePostFn: () => void }) {
    return (
       <div className="post-menu">
          <PostMenuButton onClick={() => {}}>
             <Edit />
             Edit
          </PostMenuButton>
-         <PostMenuButton onClick={() => {}} className="destructive">
+         <PostMenuButton onClick={deletePostFn} className="destructive">
             <Trash />
             Delete Post
          </PostMenuButton>

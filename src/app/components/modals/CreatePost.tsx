@@ -6,6 +6,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import FormField from "../FormField";
 import "@/_css/_components/create-post-modal.css";
 import { useUser } from "@/app/hooks/useUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CreatePostModal() {
    const { registerModal } = useModals();
@@ -14,6 +15,7 @@ export default function CreatePostModal() {
    const dialogRef = useRef<HTMLDialogElement>(null);
    const submitRef = useRef<HTMLButtonElement>(null);
    const typeRef = useRef<HTMLInputElement>(null);
+   const queryClient = useQueryClient();
    const { user } = useUser();
 
    function openModal(isOpen: boolean) {
@@ -41,8 +43,9 @@ export default function CreatePostModal() {
    useEffect(() => {
       if (formState?.success) {
          openModal(false);
+         queryClient.invalidateQueries({ queryKey: [`profile-${user?.id}`] });
       }
-   }, [formState, user]);
+   }, [formState, queryClient, user?.id]);
 
    function saveDraft(e: React.MouseEvent<HTMLButtonElement>) {
       if (typeRef.current) typeRef.current.value = "draft";

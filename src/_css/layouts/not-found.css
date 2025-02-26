@@ -1,0 +1,11 @@
+.not-found-page {
+   display: grid;
+   place-content: center;
+   height: 100%;
+   width: 100%;
+   background-image: var(--hex-background-gradient), url(/hex_background_light.png);
+
+   @media (prefers-color-scheme: dark) {
+      background-image: var(--hex-background-gradient), url(/hex_background.png);
+   }
+}

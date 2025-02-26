@@ -1,4 +1,4 @@
-import { getSession } from "@/_actions/auth";
+import { getSession, sendToLoginWithRedirect } from "@/_actions/auth";
 import { getUserDrafts } from "@/_actions/post";
 import { getUserById } from "@/_actions/user";
 import { Back } from "@/app/components/icons";
@@ -17,7 +17,7 @@ export default async function DraftsPage({ params }: { params: Promise<{ handle:
    const { handle } = await params;
 
    if (!session) {
-      redirect(`/user/${handle}`);
+      return sendToLoginWithRedirect(`/user/${handle}/drafts`);
    }
 
    const user = await getUserById(session?.id);
@@ -28,7 +28,7 @@ export default async function DraftsPage({ params }: { params: Promise<{ handle:
 
    return (
       <main>
-         <nav className="post-nav">
+         <nav className="subpage-nav">
             <Link href={`/user/${user.handle}`} className="btn btn-sm">
                <Back />
                Profile

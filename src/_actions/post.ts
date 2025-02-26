@@ -1,6 +1,6 @@
 "use server";
 
-import { postDao } from "@/daos";
+import { notificationDao, postDao, userDao } from "@/daos";
 import { CreatePostSchema, createPostSchema } from "@/lib/definitions";
 import { getSession } from "./auth";
 import { GetPostsParams, FeedPost } from "@/daos/post.dao";
@@ -79,7 +79,16 @@ export async function createPost(_: unknown, createPostData: FormData) {
 
    const { content, parentId } = validatedFields.data;
 
-   const processedContent = content.replaceAll(/@(\S+)/g, `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`);
+   const handleMatches = content.matchAll(/@([A-Za-z0-9_]+)/g);
+
+   const mentions = Array.from(handleMatches)
+      .map((match) => match[1])
+      .reduce((acc, mention) => {
+         if (acc.includes(mention)) return acc;
+         return [...acc, mention];
+      }, [] as string[]);
+
+   const processedContent = content.replaceAll(/@([A-Za-z0-9_]+)/g, `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`);
 
    const post = await postDao.createPost({
       authorId: user.id,
@@ -90,5 +99,31 @@ export async function createPost(_: unknown, createPostData: FormData) {
 
    if (!post) return { success: false, errors: { content: ["Failed to create post"] } };
 
+   // Send notifications to everyone mentioned in the post
+   await sendMentionNotifications(mentions, post.id, user.id);
+
    return { success: true, errors: null };
+}
+
+async function sendMentionNotifications(mentions: string[], postId: number, userId: number) {
+   const user = await userDao.getUserById(userId);
+
+   if (!user) return;
+
+   for (const mention of mentions) {
+      await notificationDao.createNotification({
+         recipientHandle: mention,
+         type: "MENTION",
+         message: `You were mentioned in a post by ${user.handle}`,
+         link: `${process.env.NEXT_PUBLIC_APP_URL}/user/${user.handle}/post/${postId}`,
+         actorId: user.id,
+         postId,
+      });
+   }
+}
+
+export async function deletePost({ postId }: { postId: number }) {
+   const user = await getSession();
+   if (!user) return;
+   return postDao.deletePost({ postId, userId: user.id });
 }

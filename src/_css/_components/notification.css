@@ -1,0 +1,20 @@
+.notification {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5em;
+   padding: var(--padding-lg);
+   border-block-end: 1px solid var(--surface-300);
+   text-decoration: none;
+
+   &.has-link {
+      cursor: pointer;
+   }
+
+   &:hover {
+      background-color: var(--surface-200);
+   }
+
+   &:active {
+      background-color: var(--surface-300);
+   }
+}

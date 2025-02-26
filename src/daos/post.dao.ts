@@ -1,21 +1,5 @@
 import { Post, Prisma, PrismaClient } from "@prisma/client";
 
-export type GetPostsParams = {
-   userId?: number;
-   limit: number;
-   page: number;
-};
-
-type DeepPost = Post & {
-   _count: { likes: number; comments: number };
-   likes: { userId: number }[];
-   author: {
-      id: number;
-      displayName: string;
-      handle: string;
-   };
-};
-
 export class PostDAO {
    private postInclude(userId?: number): Prisma.PostInclude {
       return {
@@ -66,6 +50,7 @@ export class PostDAO {
          where: {
             parent: null,
             draft: false,
+            deleted: false,
             author: {
                followers: {
                   some: {
@@ -88,6 +73,7 @@ export class PostDAO {
          where: {
             parent: null,
             draft: false,
+            deleted: false,
          },
          orderBy: this.popularOrderBy,
          include: this.postInclude(userId),
@@ -103,6 +89,7 @@ export class PostDAO {
          where: {
             parent: null,
             draft: false,
+            deleted: false,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -119,6 +106,7 @@ export class PostDAO {
             authorId: uid,
             draft: false,
             parent: null,
+            deleted: false,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -134,6 +122,7 @@ export class PostDAO {
          where: {
             authorId: uid,
             draft: true,
+            deleted: false,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -150,6 +139,7 @@ export class PostDAO {
             authorId: uid,
             parent: null,
             draft: false,
+            deleted: false,
          },
          include: this.postInclude(userId),
          orderBy: this.popularOrderBy,
@@ -167,6 +157,7 @@ export class PostDAO {
                contains: `[@${handle}]`,
             },
             draft: false,
+            deleted: false,
          },
          include: this.postInclude(userId),
          orderBy: {
@@ -181,6 +172,7 @@ export class PostDAO {
       return this.prisma.post.findUnique({
          where: {
             id: postId,
+            deleted: false,
          },
          include: this.postInclude(userId),
       });
@@ -191,6 +183,7 @@ export class PostDAO {
          where: {
             parentId: postId,
             draft: false,
+            deleted: false,
          },
          include: this.postInclude(userId),
          orderBy: this.popularOrderBy,
@@ -249,6 +242,20 @@ export class PostDAO {
          include: this.postInclude(userId),
       });
    }
+
+   async deletePost({ postId, userId }: { postId: number; userId: number }) {
+      try {
+         return this.prisma.post.update({
+            where: { id: postId, authorId: userId },
+            data: {
+               deleted: true,
+            },
+            include: this.postInclude(userId),
+         });
+      } catch {
+         return null;
+      }
+   }
 }
 
 export interface CreatePostData {
@@ -259,3 +266,19 @@ export interface CreatePostData {
 }
 
 export type FeedPost = Prisma.PromiseReturnType<typeof PostDAO.prototype.getTrendingPosts>[number];
+
+export type GetPostsParams = {
+   userId?: number;
+   limit: number;
+   page: number;
+};
+
+type DeepPost = Post & {
+   _count: { likes: number; comments: number };
+   likes: { userId: number }[];
+   author: {
+      id: number;
+      displayName: string;
+      handle: string;
+   };
+};

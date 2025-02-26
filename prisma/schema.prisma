@@ -30,12 +30,15 @@ model User {
   likes       Like[]
   followers   User[]   @relation("followers")
   following   User[]   @relation("followers")
+  notifications Notification[] @relation("notifications")
+  notificationActor Notification[] @relation("notificationActor")
 }
 
 model Post {
   id Int @id @default(autoincrement())
   content String
   draft Boolean @default(false)
+  deleted Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   authorId Int
@@ -44,6 +47,7 @@ model Post {
   parent Post? @relation("comments", fields: [parentId], references: [id])
   comments Post[] @relation("comments")
   likes Like[]
+  notifications Notification[] @relation("notificationPost")
 }
 
 model Like {
@@ -53,4 +57,26 @@ model Like {
   userId Int
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([postId, userId])
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+  recipientId Int
+  recipient User @relation("notifications", fields: [recipientId], references: [id], onDelete: Cascade)
+  read Boolean @default(false)
+  createdAt DateTime @default(now())
+  message String
+  link String?
+  type NotificationType
+  actorId Int?
+  actor User? @relation("notificationActor", fields: [actorId], references: [id])
+  postId Int?
+  post Post? @relation("notificationPost", fields: [postId], references: [id])
+}
+
+enum NotificationType {
+  LIKE
+  COMMENT
+  FOLLOW
+  MENTION
 }
