@@ -4,7 +4,6 @@ import { postDao } from "@/daos";
 import { CreatePostSchema, createPostSchema } from "@/lib/definitions";
 import { getSession } from "./auth";
 import { GetPostsParams, FeedPost } from "@/daos/post.dao";
-import { sendMentionNotifications } from "./notifications";
 
 export const getFollowingPosts = async ({ page, limit }: GetPostsParams): Promise<FeedPost[]> => {
    const user = await getSession();
@@ -52,7 +51,13 @@ export const getComments = async ({ postId, page, limit }: GetPostsParams & { po
 export const likePost = async ({ postId }: { postId: number }) => {
    const user = await getSession();
    if (!user) return;
-   return postDao.likePost({ postId, userId: user.id });
+   try {
+      const likedPost = await postDao.likePost({ postId, userId: user.id });
+      if (!likedPost) return;
+      return { success: true, post: likedPost };
+   } catch {
+      return { success: false, errors: { content: ["Failed to like post"] } };
+   }
 };
 
 export const unlikePost = async ({ postId }: { postId: number }) => {
@@ -80,16 +85,10 @@ export async function createPost(_: unknown, createPostData: FormData) {
 
    const { content, parentId } = validatedFields.data;
 
-   const handleMatches = content.matchAll(/@([A-Za-z0-9_]+)/g);
-
-   const mentions = Array.from(handleMatches)
-      .map((match) => match[1])
-      .reduce((acc, mention) => {
-         if (acc.includes(mention)) return acc;
-         return [...acc, mention];
-      }, [] as string[]);
-
-   const processedContent = content.replaceAll(/@([A-Za-z0-9_]+)/g, `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`);
+   const processedContent = content.replaceAll(
+      /@([A-Za-z0-9_]+)/g,
+      `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`
+   );
 
    const post = await postDao.createPost({
       authorId: user.id,
@@ -99,9 +98,6 @@ export async function createPost(_: unknown, createPostData: FormData) {
    });
 
    if (!post) return { success: false, errors: { content: ["Failed to create post"] } };
-
-   // Send notifications to everyone mentioned in the post
-   await sendMentionNotifications(mentions, post.id, user.id);
 
    return { success: true, errors: null };
 }

@@ -1,25 +1,25 @@
 "use client";
 
-import { getNotifications } from "@/_actions/notifications";
-import { TabSelector } from "../app/TabSelector";
 import { useState } from "react";
+import { TabSelector } from "../app/TabSelector";
 import NotificationFeed from "./NotificationFeed";
+import { getAllNotifications } from "@/_actions/notifications";
 
 export default function UserNotificationFeed() {
-   const [tab, setTab] = useState("all");
+   const [selectedTab, setSelectedTab] = useState("all");
 
    return (
       <>
          <nav>
             <TabSelector
-               onChangeFn={setTab}
                options={[
                   { label: "All", value: "all" },
                   { label: "Mentions", value: "mentions" },
                ]}
+               onChangeFn={setSelectedTab}
             />
          </nav>
-         {tab === "all" && <NotificationFeed getNotificationsFn={getNotifications} />}
+         {selectedTab === "all" && <NotificationFeed loadNotificationsFn={getAllNotifications} />}
       </>
    );
 }

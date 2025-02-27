@@ -1,47 +1,23 @@
 import { NotificationType, PrismaClient } from "@prisma/client";
 
 export class NotificationDAO {
-   constructor(private readonly prisma: PrismaClient) { }
+   constructor(private readonly prisma: PrismaClient) {}
 
-   async createNotification({ recipientHandle, type, message, link, actorId, postId }: CreateNotificationParams) {
-      try {
-         return this.prisma.notification.create({
-            data: {
-               recipient: { connect: { handle: recipientHandle } },
-               type,
-               message,
-               link,
-               actor: { connect: { id: actorId } },
-               post: postId ? { connect: { id: postId } } : undefined,
-            },
-         });
-      } catch {
-         return null;
-      }
-   }
-
-   async getNotifications({ recipientId, limit = 10, page = 1 }: GetNotificationsParams) {
-      return this.prisma.notification.findMany({
-         where: { recipientId },
+   async getNotifications({ recipientId, type, limit = 10, page = 1 }: GetNotificationsParams) {
+      const notifications = await this.prisma.notification.findMany({
+         where: { recipientId, type },
+         orderBy: { createdAt: "desc" },
          skip: (page - 1) * limit,
          take: limit,
-         orderBy: { createdAt: "desc" },
-         include: {
-            actor: {
-               select: {
-                  id: true,
-                  handle: true,
-                  displayName: true,
-               },
-            },
-            post: true,
-         },
       });
+
+      return notifications;
    }
 }
 
-export type CreateNotificationParams = {
-   recipientHandle: string;
+export type CreateNotificationParams<T extends { recipientHandle?: string; recipientId?: number }> = {
+   recipientHandle?: T["recipientHandle"];
+   recipientId?: T["recipientId"];
    type: NotificationType;
    message: string;
    link?: string;
@@ -53,6 +29,7 @@ type GetNotificationsParams = {
    recipientId: number;
    limit?: number;
    page?: number;
+   type?: NotificationType;
 };
 
 export type NotificationWithRelations = Awaited<ReturnType<NotificationDAO["getNotifications"]>>[number];
