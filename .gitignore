@@ -3,6 +3,8 @@
 *.db
 *.db-journal
 
+routes.js
+
 # Script to make bogus posts
 populate.js
 

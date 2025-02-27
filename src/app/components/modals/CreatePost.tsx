@@ -4,9 +4,9 @@ import { createPost } from "@/_actions/post";
 import { useModals } from "@/app/hooks/useModals";
 import { useActionState, useEffect, useRef, useState } from "react";
 import FormField from "../FormField";
-import "@/_css/_components/create-post-modal.css";
 import { useUser } from "@/app/hooks/useUser";
 import { useQueryClient } from "@tanstack/react-query";
+import "@/_css/_components/create-post-modal.css";
 
 export default function CreatePostModal() {
    const { registerModal } = useModals();

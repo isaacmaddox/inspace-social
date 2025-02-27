@@ -1,9 +1,6 @@
-import { Back } from "@/app/components/icons";
 import { Metadata } from "next";
-import Link from "next/link";
 import { getSession, sendToLoginWithRedirect } from "@/_actions/auth";
-import NotificationFeed from "@/app/components/notifications/NotificationFeed";
-import { getNotifications } from "@/_actions/notifications";
+import UserNotificationFeed from "@/app/components/notifications/UserNotificationFeed";
 
 export const metadata: Metadata = {
    title: "Notifications | InSpace",
@@ -19,14 +16,7 @@ export default async function NotificationsPage() {
 
    return (
       <main>
-         <nav className="subpage-nav">
-            <Link href="/" className="btn btn-sm">
-               <Back />
-               Home
-            </Link>
-            <p className="text-base text-color-heading text-bold">Notifications</p>
-         </nav>
-         <NotificationFeed getNotificationsFn={getNotifications} />
+         <UserNotificationFeed />
       </main>
    );
 }

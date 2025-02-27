@@ -1,9 +1,10 @@
 "use server";
 
-import { notificationDao, postDao, userDao } from "@/daos";
+import { postDao } from "@/daos";
 import { CreatePostSchema, createPostSchema } from "@/lib/definitions";
 import { getSession } from "./auth";
 import { GetPostsParams, FeedPost } from "@/daos/post.dao";
+import { sendMentionNotifications } from "./notifications";
 
 export const getFollowingPosts = async ({ page, limit }: GetPostsParams): Promise<FeedPost[]> => {
    const user = await getSession();
@@ -103,23 +104,6 @@ export async function createPost(_: unknown, createPostData: FormData) {
    await sendMentionNotifications(mentions, post.id, user.id);
 
    return { success: true, errors: null };
-}
-
-async function sendMentionNotifications(mentions: string[], postId: number, userId: number) {
-   const user = await userDao.getUserById(userId);
-
-   if (!user) return;
-
-   for (const mention of mentions) {
-      await notificationDao.createNotification({
-         recipientHandle: mention,
-         type: "MENTION",
-         message: `You were mentioned in a post by ${user.handle}`,
-         link: `${process.env.NEXT_PUBLIC_APP_URL}/user/${user.handle}/post/${postId}`,
-         actorId: user.id,
-         postId,
-      });
-   }
 }
 
 export async function deletePost({ postId }: { postId: number }) {

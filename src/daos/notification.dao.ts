@@ -1,19 +1,23 @@
 import { NotificationType, PrismaClient } from "@prisma/client";
 
 export class NotificationDAO {
-   constructor(private readonly prisma: PrismaClient) {}
+   constructor(private readonly prisma: PrismaClient) { }
 
    async createNotification({ recipientHandle, type, message, link, actorId, postId }: CreateNotificationParams) {
-      return this.prisma.notification.create({
-         data: {
-            recipient: { connect: { handle: recipientHandle } },
-            type,
-            message,
-            link,
-            actor: { connect: { id: actorId } },
-            post: postId ? { connect: { id: postId } } : undefined,
-         },
-      });
+      try {
+         return this.prisma.notification.create({
+            data: {
+               recipient: { connect: { handle: recipientHandle } },
+               type,
+               message,
+               link,
+               actor: { connect: { id: actorId } },
+               post: postId ? { connect: { id: postId } } : undefined,
+            },
+         });
+      } catch {
+         return null;
+      }
    }
 
    async getNotifications({ recipientId, limit = 10, page = 1 }: GetNotificationsParams) {

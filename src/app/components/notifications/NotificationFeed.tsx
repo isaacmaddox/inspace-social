@@ -39,7 +39,7 @@ export default function NotificationFeed({
          <div style={{ position: "absolute", bottom: 0, height: "1px" }} ref={ref} />
          {notifications?.pages[0].length === 0 && (
             <div className="notification-feed-empty">
-               <p>No notifications</p>
+               <p className="text-sm text-muted">No notifications</p>
             </div>
          )}
       </div>
