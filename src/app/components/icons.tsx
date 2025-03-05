@@ -142,7 +142,15 @@ export function Settings({ ...props }: SVGProps<SVGSVGElement>) {
             strokeLinecap="round"
             strokeLinejoin="round"
          />
-         <circle cx="12.1751" cy="11.889" r="2.63616" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <circle
+            cx="12.1751"
+            cy="11.889"
+            r="2.63616"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
       </svg>
    );
 }
@@ -241,7 +249,13 @@ export function Following({ ...props }: SVGProps<SVGSVGElement>) {
 export function Back({ ...props }: SVGProps<SVGSVGElement>) {
    return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-         <path d="M4.25 12.2743L19.25 12.2743" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            d="M4.25 12.2743L19.25 12.2743"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
          <path
             d="M10.2998 18.2987L4.2498 12.2747L10.2998 6.2497"
             stroke="currentColor"
@@ -272,7 +286,13 @@ export function Drafts({ ...props }: SVGProps<SVGSVGElement>) {
             strokeLinecap="round"
             strokeLinejoin="round"
          />
-         <path d="M15.1652 4.60251L19.7312 9.16851" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            d="M15.1652 4.60251L19.7312 9.16851"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
       </svg>
    );
 }
@@ -280,7 +300,13 @@ export function Drafts({ ...props }: SVGProps<SVGSVGElement>) {
 export function Edit({ ...props }: SVGProps<SVGSVGElement>) {
    return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-         <path d="M13.7473 20.4429H20.9999" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            d="M13.7473 20.4429H20.9999"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
          <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -290,7 +316,13 @@ export function Edit({ ...props }: SVGProps<SVGSVGElement>) {
             strokeLinecap="round"
             strokeLinejoin="round"
          />
-         <path d="M11.0208 6.00089L16.473 10.188" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            d="M11.0208 6.00089L16.473 10.188"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
       </svg>
    );
 }
@@ -305,7 +337,13 @@ export function Trash({ ...props }: SVGProps<SVGSVGElement>) {
             strokeLinecap="round"
             strokeLinejoin="round"
          />
-         <path d="M20.7082 6.23972H3.75024" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+         <path
+            d="M20.7082 6.23972H3.75024"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
          <path
             d="M17.4407 6.2397C16.6557 6.2397 15.9797 5.6847 15.8257 4.9157L15.5827 3.6997C15.4327 3.1387 14.9247 2.7507 14.3457 2.7507H10.1127C9.5337 2.7507 9.0257 3.1387 8.8757 3.6997L8.6327 4.9157C8.4787 5.6847 7.8027 6.2397 7.0177 6.2397"
             stroke="currentColor"
@@ -341,6 +379,29 @@ export function At({ ...props }: SVGProps<SVGSVGElement>) {
                <rect width="24" height="24" fill="white" />
             </clipPath>
          </defs>
+      </svg>
+   );
+}
+
+export function Heart({ ...props }: SVGProps<SVGSVGElement>) {
+   return (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+         <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M2.87187 11.5983C1.79887 8.24832 3.05287 4.41932 6.56987 3.28632C8.41987 2.68932 10.4619 3.04132 11.9999 4.19832C13.4549 3.07332 15.5719 2.69332 17.4199 3.28632C20.9369 4.41932 22.1989 8.24832 21.1269 11.5983C19.4569 16.9083 11.9999 20.9983 11.9999 20.9983C11.9999 20.9983 4.59787 16.9703 2.87187 11.5983Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
+         <path
+            d="M16 6.7C17.07 7.046 17.826 8.001 17.917 9.122"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+         />
       </svg>
    );
 }

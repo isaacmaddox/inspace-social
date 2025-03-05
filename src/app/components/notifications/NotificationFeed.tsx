@@ -4,13 +4,20 @@ import { NotificationWithRelations } from "@/daos/notification.dao";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/_css/_components/notification.css";
+import { markNotificationsAsRead } from "@/_actions/notifications";
 
 const NOTIFICATION_LIMIT = 10;
 
 export default function NotificationFeed({ loadNotificationsFn }: NotificationFeedProps) {
    const { data, isLoading, hasNextPage, fetchNextPage } = useInfiniteQuery({
       queryKey: ["notifications"],
-      queryFn: ({ pageParam }) => loadNotificationsFn({ page: pageParam, limit: NOTIFICATION_LIMIT }),
+      queryFn: async ({ pageParam }) => {
+         const notifications = await loadNotificationsFn({ page: pageParam, limit: NOTIFICATION_LIMIT });
+         if (notifications.length > 0) {
+            markNotificationsAsRead(notifications.map((notification) => notification.id));
+         }
+         return notifications;
+      },
       getNextPageParam: (lastPage, pages) => (lastPage.length > 0 ? pages.length + 1 : undefined),
       initialPageParam: 1,
    });
@@ -34,7 +41,7 @@ export default function NotificationFeed({ loadNotificationsFn }: NotificationFe
             </div>
          )}
          {!hasNextPage && !isLoading && (
-            <div className="feed-message-container">
+            <div className="feed-loading-container">
                <p className="text-sm text-muted">No more notifications</p>
             </div>
          )}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { TabSelector } from "../app/TabSelector";
 import NotificationFeed from "./NotificationFeed";
-import { getAllNotifications } from "@/_actions/notifications";
+import { getAllNotifications, getMentionsNotifications } from "@/_actions/notifications";
 
 export default function UserNotificationFeed() {
    const [selectedTab, setSelectedTab] = useState("all");
@@ -20,6 +20,7 @@ export default function UserNotificationFeed() {
             />
          </nav>
          {selectedTab === "all" && <NotificationFeed loadNotificationsFn={getAllNotifications} />}
+         {selectedTab === "mentions" && <NotificationFeed loadNotificationsFn={getMentionsNotifications} />}
       </>
    );
 }

@@ -73,6 +73,7 @@ export const getPostById = async (postId: number) => {
 
 export async function createPost(_: unknown, createPostData: FormData) {
    const user = await getSession();
+   const mentionRegex = /@([A-Za-z0-9_]+)/g;
    if (!user) return { success: false, errors: null };
 
    const data = Object.fromEntries(createPostData.entries()) as unknown as CreatePostSchema;
@@ -85,10 +86,8 @@ export async function createPost(_: unknown, createPostData: FormData) {
 
    const { content, parentId } = validatedFields.data;
 
-   const processedContent = content.replaceAll(
-      /@([A-Za-z0-9_]+)/g,
-      `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`
-   );
+   const processedContent = content.replaceAll(mentionRegex, `[@$1](${process.env.NEXT_PUBLIC_APP_URL}/user/$1)`);
+
 
    const post = await postDao.createPost({
       authorId: user.id,

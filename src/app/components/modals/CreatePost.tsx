@@ -44,6 +44,7 @@ export default function CreatePostModal() {
       if (formState?.success) {
          openModal(false);
          queryClient.invalidateQueries({ queryKey: [`profile-${user?.id}`] });
+         queryClient.invalidateQueries({ queryKey: [`drafts`] });
       }
    }, [formState, queryClient, user?.id]);
 

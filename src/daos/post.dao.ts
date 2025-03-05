@@ -33,7 +33,7 @@ export class PostDAO {
       { updatedAt: "desc" },
    ];
 
-   constructor(private prisma: PrismaClient) {}
+   constructor(private prisma: PrismaClient) { }
 
    private sortByPopularity(posts: DeepPost[]): DeepPost[] {
       return posts.sort((a, b) => {
@@ -196,6 +196,13 @@ export class PostDAO {
    async createPost(post: CreatePostData) {
       return this.prisma.post.create({
          data: post,
+         include: {
+            author: {
+               select: {
+                  handle: true,
+               }
+            }
+         }
       });
    }
 
