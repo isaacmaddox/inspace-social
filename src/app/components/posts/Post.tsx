@@ -14,15 +14,7 @@ import PostMenu from "./PostMenu";
 
 const numberFormatter = new Intl.NumberFormat("en-us");
 
-export default function Post({
-   post: startingPost,
-   noClick = false,
-   onPostDeleted,
-}: {
-   post: FeedPost;
-   noClick?: boolean;
-   onPostDeleted?: () => void;
-}) {
+export default function Post({ post: startingPost, noClick = false, onPostDeleted }: { post: FeedPost; noClick?: boolean; onPostDeleted?: () => void }) {
    const [post, setPost] = useState<FeedPost>(startingPost);
    const [liked, setLiked] = useState(post.likes?.length > 0);
    const [menuOpen, setMenuOpen] = useState(false);
@@ -51,8 +43,8 @@ export default function Post({
          setLiked(false);
       } else {
          const updatedPost = await likePost({ postId: post.id });
-         if (!updatedPost) return;
-         setPost(updatedPost);
+         if (!updatedPost?.post) return;
+         setPost(updatedPost.post);
          setLiked(true);
       }
    };
@@ -60,8 +52,7 @@ export default function Post({
    const handleClick = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
          e.stopPropagation();
-         if (e.target instanceof HTMLAnchorElement || e.target instanceof HTMLButtonElement || (e.target as HTMLElement).closest(".post-author"))
-            return;
+         if (e.target instanceof HTMLAnchorElement || e.target instanceof HTMLButtonElement || (e.target as HTMLElement).closest(".post-author")) return;
          router.push(`/user/${post.author.handle}/post/${post.id}`);
       },
       [post.id, router, post.author.handle]
